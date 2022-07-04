@@ -198,7 +198,7 @@ def dict_factory(cursor, row):
 @app.route('/', methods=['GET'])
 def home():
     return '''<h1>Flavors API</h1>
-    <p>This is a recipe api.</p>
+    <p>This is a recipe api brought to you by Homely Flavor.</p>
     <p>To access the recipe api, you need to go to the <a href="http://127.0.0.1:5000/flavors/api/recipes">http://127.0.0.1:5000/flavors/api/recipes</a> on your local machine or, <a href="https://flavorsapi.herokuapp.com/flavors/api/recipes">https://flavorsapi.herokuapp.com/flavors/api/recipes</a> our website</p>'''
  
 @app.route('/flavors/api/recipes', methods=['GET'])
