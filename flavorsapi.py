@@ -197,7 +197,13 @@ def dict_factory(cursor, row):
 # Home screen
 @app.route('/', methods=['GET'])
 def home():
-    return '''<h1>Flavors API</h1>
+    return '''
+    <style>
+    * {
+        font-family: monospace;
+        }
+    </style>
+    <h1>Flavors API</h1>
     <p>This is a recipe api brought to you by Homely Flavor.</p>
     <p>To access the recipe api's list, you need to go to the <a href="http://127.0.0.1:5000/flavors/api/recipes">http://127.0.0.1:5000/flavors/api/recipes</a> on your local machine or, <a href="https://flavorsapi.herokuapp.com/flavors/api/recipes">https://flavorsapi.herokuapp.com/flavors/api/recipes</a> our website</p>'''
  
