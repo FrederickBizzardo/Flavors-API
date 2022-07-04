@@ -1,0 +1,44 @@
+#import sqlite3
+import psycopg2
+import os
+
+
+conn = psycopg2.connect(
+        host="localhost",
+        database="flavors_api",
+        user=os.environ['DB_USERNAME'],
+        password=os.environ['DB_PASSWORD'])
+
+#conn = sqlite3.connect('flavor_api_database.db')
+print("Database connection established")
+
+
+# Open a cursor to perform database operations
+cur = conn.cursor()
+
+# Execute a command: this creates a new table
+cur.execute('DROP TABLE IF EXISTS recipes;')
+try:
+    
+    cur.execute('''
+        CREATE TABLE recipes (
+            rep_id INT PRIMARY KEY NOT NULL,
+            title VARCHAR(155) NOT NULL,
+            ingredients VARCHAR(155),
+            servings CHAR(20), 
+            instructions VARCHAR(255)
+        );
+    ''')
+
+
+    print("SQLite table successfully created")
+    
+except:
+    print("SQLite table creation failed")
+finally:
+    cur.execute('''INSERT INTO recipes VALUES(2,'Beef Stew','Chicken, tomatoes, onions','4','Cut the chicken');''')
+    print("Recipe created successfully")
+    conn.commit()
+    cur.close()
+    conn.close()
+

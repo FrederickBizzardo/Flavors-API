@@ -1,0 +1,75 @@
+recipes = [
+    { "title":"Stracciatella (Italian Wedding Soup)",
+      "ingredients":"3 1/2 c Chicken broth; homemade|1 lb Fresh spinach; wash/trim/chop|1 Egg|1 c Grated parmesan cheese; --or--|1 c Romano cheese; freshly grated|Salt and pepper; to taste",
+      "servings":"4 servings",
+      "id": 1,
+      "instructions":"Bring 1 cup of the broth to a boil. Add spinach and cook until softened but still bright green. Remove spinach with a slotted spoon and set aside. Add remaining broth to pot. Bring to a boil. Meanwhile, beat egg lightly with a fork. Beat in 1/4 cup of cheese. When broth boils pour in egg mixture, stirring constantly for a few seconds until it cooks into 'rags.'' Add reserved spinach, salt and pepper. Serve immediately, passing remaining cheese. NOTES: Someone asked for this recipe a while back. I believe this soup, known as 'Stracciatella' is synonymous with Italian Wedding Soup, however, I seem to remember from I-don't-know-where that Italian Wedding Soup is the same as this but with the addition of tiny meatballs." 
+    },
+    {
+      "title": "Need to find a good Python tutorial on the web",
+      "ingredients": "Stuff",
+      "servings": "4 servings",
+      "id": 2,
+      "instructions": "Learn Python"
+    }
+]
+
+@app.route('/flavors/api/recipes', methods=['GET'])
+def recipe_list():
+  return jsonify({'recipes': recipes})
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
+
+@app.route('/flavors/api/recipes/<recipe_name>', methods=['GET'])
+def get_recipes(recipe_name):
+    recipe = [recipe for recipe in recipes if recipe_name in recipe['title']]
+    
+    if len(recipe) == 0:
+        abort(404)
+        
+    return jsonify({'recipe': recipe[0]})
+
+@app.route('/flavors/api/recipes', methods=['POST'])
+def create_recipe():
+    if not request.json or not 'title' in request.json:
+        abort(400)
+    recipe = { 
+        'id': recipes[-1]['id'] + 1,     
+        'title': request.json['title'],
+        'ingredients': request.json.get('ingredients', ""),
+        'servings': request.json.get('servings', ""),
+        'instructions': request.json.get('instructions', "")
+    }
+    recipes.append(recipe)
+    return jsonify({'recipe': recipe}), 201
+
+@app.route('/flavors/api/recipes/<recipe_name>', methods=['PUT'])
+def update_recipe(recipe_name):
+    recipe = [recipe for recipe in recipes if recipe['title'] == recipe_name]
+    if len(recipe) == 0:
+        abort(404)
+    if not request.json:
+        abort(400)
+    if 'title' in request.json and type(request.json['title']) != str:
+        abort(400)
+    if 'ingredients' in request.json and type(request.json['ingredients']) is not str:
+        abort(400)
+    if 'servings' in request.json and type(request.json['servings']) is not str:
+        abort(400)
+    if 'instructions' in request.json and type(request.json['instructions']) is not str:
+        abort(400)
+    recipe[0]['title'] = request.json.get('title',recipe[0]['title'])
+    recipe[0]['ingredients'] = request.json.get('ingredients', recipe[0]['ingredients'])
+    recipe[0]['instructions'] = request.json.get('instructions', recipe[0]['instructions'])
+    recipe[0]['servings'] = request.json.get('servings', recipe[0]['servings'])
+    return jsonify({'recipe': recipe[0]})
+
+@app.route('/flavors/api/recipes/<recipe_name>', methods=['DELETE'])
+def delete_task(recipe_name):
+    recipe = [recipe for recipe in recipes if recipe['title'] == recipe_name]
+    if len(recipe) == 0:
+        abort(404)
+    recipes.remove(recipe[0])
+    return jsonify({'result': True}) 
