@@ -1,9 +1,2 @@
-distro==1.4.0
-distro-info===0.23ubuntu1
 Flask==1.1.1
 Jinja2==2.10.1
-pipenv==11.9.0
-python-apt==2.0.0+ubuntu0.20.4.7
-python-debian===0.1.36ubuntu1
-virtualenv==20.0.17
-virtualenv-clone==0.5.7
