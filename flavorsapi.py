@@ -326,7 +326,7 @@ def api_post():
             password=os.environ['DB_PASSWORD'])
 
     recipes = request.get_json()
-    rep_id = request.json['id']
+    rep_id = request.json['rep_id']
     title = request.json['title']
     ingredients = request.json.get('ingredients', "")
     servings = request.json.get('servings', "")
