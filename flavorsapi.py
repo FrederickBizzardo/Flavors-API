@@ -353,8 +353,8 @@ def api_post():
 #    return cursor.fetchone()
 
 # Access specific recipe by id
-@app.route('/flavors/api/recipes/<title>', methods=['GET'])
-def get_recipes(title):
+@app.route('/flavors/api/recipes/<rep_name>', methods=['GET'])
+def get_recipes(rep_name):
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -364,13 +364,11 @@ def get_recipes(title):
             database="flavors_api",
             user=os.environ['DB_USERNAME'],
             password=os.environ['DB_PASSWORD'])
-    recipes = request.get_json()
-
-    title = request.json['title']
+    
     #cur = conn.cursor()
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     #statement = "SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = ?"
-    cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE title = %s", [recipe for recipe in recipes if recipes[title] in title])
+    cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE title = %s", [rep_name])
     recipe = cur.fetchone()
     #recipe = get_recipe_by_id(rep_id)
     return jsonify({'recipe': recipe}) #can change array position from 0 - 4 
