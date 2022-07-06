@@ -3,6 +3,7 @@
 from flask import Flask, request, jsonify, abort, make_response, url_for
 from jsonschema import validate
 
+import json
 #import sqlite3
 import psycopg2
 import psycopg2.extras
@@ -220,6 +221,10 @@ def api_all():
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
+        #all_recipes = cur.execute('SELECT * FROM recipes;').fetchall()
+        cur.execute('SELECT * FROM recipes;')
+        all_recipes = cur.fetchall()
     except:
         conn = psycopg2.connect(
             host="localhost", 
