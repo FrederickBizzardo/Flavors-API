@@ -370,7 +370,7 @@ def get_recipes(rep_name):
     #cur = conn.cursor()
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     #statement = "SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = ?"
-    cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE title = %s",[rep_name in title['title']])
+    cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE title = %s", [rep_name])
     recipe = cur.fetchone()
     #recipe = get_recipe_by_id(rep_id)
     return jsonify({'recipe': recipe}) #can change array position from 0 - 4 
