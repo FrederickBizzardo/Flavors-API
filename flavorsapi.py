@@ -364,9 +364,7 @@ def get_recipes(rep_name):
             database="flavors_api",
             user=os.environ['DB_USERNAME'],
             password=os.environ['DB_PASSWORD'])
-    recipes = request.get_json()
-  
-    title = request.json['title']
+
     #cur = conn.cursor()
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     #statement = "SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = ?"
