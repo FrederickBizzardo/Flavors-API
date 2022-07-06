@@ -314,7 +314,7 @@ def insert_recipe(rep_id, title, ingredients, servings, instructions):
 
 # Posted user recipe(s)
 @app.route('/flavors/api/recipes', methods=['GET', 'POST'])
-def api_post(rep_name):
+def api_post():
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -326,7 +326,6 @@ def api_post(rep_name):
             password=os.environ['DB_PASSWORD'])
 
     recipes = request.get_json()
-    recipe = [recipe for recipe in recipes if rep_name in recipe['title']]
     rep_id = request.json['rep_id']
     title = request.json['title']
     ingredients = request.json.get('ingredients', "")
@@ -338,7 +337,7 @@ def api_post(rep_name):
     cur.execute('INSERT INTO recipes(rep_id, title, ingredients, servings, instructions) VALUES(%s, %s, %s, %s, %s);', (rep_id, title, ingredients, servings, instructions))
     conn.commit()
     conn.close()
-    return jsonify({'recipe': recipe[0]}), 201
+    return jsonify({'recipe': recipes}), 201
 
 # Filter through recipes database
 #def get_recipe_by_id(rep_id):
@@ -354,8 +353,8 @@ def api_post(rep_name):
 #    return cursor.fetchone()
 
 # Access specific recipe by id
-@app.route('/flavors/api/recipes/<int:rep_name>', methods=['GET'])
-def get_recipes(rep_name):
+@app.route('/flavors/api/recipes/<int:rep_id>', methods=['GET'])
+def get_recipes(rep_id):
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -369,7 +368,7 @@ def get_recipes(rep_name):
     #cur = conn.cursor()
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     #statement = "SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = ?"
-    cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE title = %s", [rep_name])
+    cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = %s", [rep_id])
     recipe = cur.fetchone()
     #recipe = get_recipe_by_id(rep_id)
     return jsonify({'recipe': recipe}) #can change array position from 0 - 4 
