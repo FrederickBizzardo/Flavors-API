@@ -216,8 +216,14 @@ def home():
 @app.route('/flavors/api/recipes', methods=['GET'])
 def api_all():
     #conn = sqlite3.connect('flavor_api_database.db')
-    
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require'
+    try:
+        conn = psycopg2.connect(
+            host="localhost", 
+            database="flavors_api",
+            user=os.environ['DB_USERNAME'],
+            password=os.environ['DB_PASSWORD'])
+    except:
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         #host="localhost", 
         #database="flavors_api",
         #DB_USERNAME=os.environ['DB_USERNAME'],
@@ -225,7 +231,7 @@ def api_all():
         
         #URL = os.environ.get('postgres://etryrrveyngcvx:7eb31e76ed3b8452749bada81b9058ee51cc902b7ea996b3a2b566ab841dbe5b@ec2-44-198-82-71.compute-1.amazonaws.com:5432/ddskfvmrts9ipg')
         #DATABASE_URL=os.environ.get('postgres://etryrrveyngcvx:7eb31e76ed3b8452749bada81b9058ee51cc902b7ea996b3a2b566ab841dbe5b@ec2-44-198-82-71.compute-1.amazonaws.com:5432/ddskfvmrts9ipg -a flavorsapi')
-        )
+        
     #conn.row_factory = dict_factory
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     #all_recipes = cur.execute('SELECT * FROM recipes;').fetchall()
@@ -277,8 +283,8 @@ def api_filter():
         host="localhost", 
         database="flavors_api",
         user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'],
-        URL = os.environ.get('DATABASE_URL'))
+        password=os.environ['DB_PASSWORD'])
+
     #conn.row_factory = dict_factory
     #cur = conn.cursor()
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
@@ -305,8 +311,8 @@ def api_post():
         host="localhost", 
         database="flavors_api",
         user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'],
-        URL = os.environ.get('DATABASE_URL'))
+        password=os.environ['DB_PASSWORD'])
+
     recipes = request.get_json()
     rep_id = request.json['id']
     title = request.json['title']
@@ -341,8 +347,8 @@ def get_recipes(rep_id):
         host="localhost", 
         database="flavors_api",
         user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'],
-        URL = os.environ.get('DATABASE_URL'))
+        password=os.environ['DB_PASSWORD'])
+
     #cur = conn.cursor()
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     #statement = "SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = ?"
@@ -356,11 +362,11 @@ def get_recipes(rep_id):
 def get_db_connection():
     #conn = sqlite3.connect('flavor_api_database.db')
     conn = psycopg2.connect(
-        host="localhost",
+        host="localhost", 
         database="flavors_api",
         user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'],
-        URL = os.environ.get('DATABASE_URL'))
+        password=os.environ['DB_PASSWORD'])
+
     #conn.row_factory = sqlite3.Row
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     
@@ -372,8 +378,8 @@ def get_recipe(rep_id):
         host="localhost", 
         database="flavors_api",
         user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'],
-        URL = os.environ.get('DATABASE_URL'))
+        password=os.environ['DB_PASSWORD'])
+
     post = conn.execute('SELECT *FROM recipes WHERE rep_id = %s', {'recipe': rep_id}).fetchone()
     conn.close()
     if post is None:
@@ -393,8 +399,8 @@ def update_recipe():
         host="localhost", 
         database="flavors_api",
         user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'],
-        URL = os.environ.get('DATABASE_URL'))
+        password=os.environ['DB_PASSWORD'])
+
     cursor = db.cursor()
     statement = "UPDATE recipes SET title = %s, ingredients = %s, servings = %s, instructions = %s WHERE rep_id = %s"
     cursor.execute(statement, [title, ingredients, servings, instructions, rep_id])
@@ -408,8 +414,8 @@ def delete_recipe(rep_id):
         host="localhost", 
         database="flavors_api",
         user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'],
-        URL = os.environ.get('DATABASE_URL'))
+        password=os.environ['DB_PASSWORD'])
+
     cursor = db.cursor()
     statement = "DELETE FROM recipes WHERE rep_id = %s"
     cursor.execute(statement, [rep_id])
