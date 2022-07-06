@@ -189,7 +189,7 @@ app = Flask(__name__)
 #    return jsonify(insert_recipe(recipe))
 
 
-DATABASE_URL = os.environ['DATABASE_URL']
+
 
 #conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
@@ -216,11 +216,12 @@ def home():
 @app.route('/flavors/api/recipes', methods=['GET'])
 def api_all():
     #conn = sqlite3.connect('flavor_api_database.db')
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require',
+    conn = psycopg2.connect(#DATABASE_URL, sslmode='require',
         host="localhost", 
         database="flavors_api",
-        user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'],
+        DB_USERNAME=os.environ['DB_USERNAME'],
+        DB_PASSWORD=os.environ['DB_PASSWORD'],
+        DATABASE_URL = os.environ['DATABASE_URL']
         #URL = os.environ.get('postgres://etryrrveyngcvx:7eb31e76ed3b8452749bada81b9058ee51cc902b7ea996b3a2b566ab841dbe5b@ec2-44-198-82-71.compute-1.amazonaws.com:5432/ddskfvmrts9ipg')
         #DATABASE_URL=os.environ.get('postgres://etryrrveyngcvx:7eb31e76ed3b8452749bada81b9058ee51cc902b7ea996b3a2b566ab841dbe5b@ec2-44-198-82-71.compute-1.amazonaws.com:5432/ddskfvmrts9ipg -a flavorsapi')
         )
