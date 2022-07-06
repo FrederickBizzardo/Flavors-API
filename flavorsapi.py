@@ -220,8 +220,6 @@ def api_all():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require',
         host="localhost", 
         database="flavors_api",
-        DB_HOST=os.environ['DB_HOST'],
-        DB_NAME=os.environ['DB_NAME'],
         DB_USERNAME=os.environ['DB_USERNAME'],
         DB_PASSWORD=os.environ['DB_PASSWORD']
         
