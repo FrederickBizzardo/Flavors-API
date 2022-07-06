@@ -364,14 +364,31 @@ def get_recipes(rep_name):
             database="flavors_api",
             user=os.environ['DB_USERNAME'],
             password=os.environ['DB_PASSWORD'])
-
+    
     #cur = conn.cursor()
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     #statement = "SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = ?"
     cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE title = %s", [rep_name])
-    recipe = cur.fetchone()
+    recipes = cur.fetchone()
+    recipe = [recipe for recipe in recipes if recipe['title'] == rep_name]
+    if len(recipe) == 0:
+        abort(404)
+    if not request.json:
+        abort(400)
+    if 'title' in request.json and type(request.json['title']) != str:
+        abort(400)
+    if 'ingredients' in request.json and type(request.json['ingredients']) is not str:
+        abort(400)
+    if 'servings' in request.json and type(request.json['servings']) is not str:
+        abort(400)
+    if 'instructions' in request.json and type(request.json['instructions']) is not str:
+        abort(400)
+    recipe[0]['title'] = request.json.get('title',recipe[0]['title'])
+    recipe[0]['ingredients'] = request.json.get('ingredients', recipe[0]['ingredients'])
+    recipe[0]['instructions'] = request.json.get('instructions', recipe[0]['instructions'])
+    recipe[0]['servings'] = request.json.get('servings', recipe[0]['servings'])
     #recipe = get_recipe_by_id(rep_id)
-    return jsonify({'recipe': recipe}) #can change array position from 0 - 4 
+    return jsonify({'recipe': recipe[0]}) #can change array position from 0 - 4 
     #original return jsonify({'recipe': recipe})
 
 # Connect to database
