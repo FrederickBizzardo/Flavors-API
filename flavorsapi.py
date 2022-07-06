@@ -217,13 +217,13 @@ def home():
 def api_all():
     #conn = sqlite3.connect('flavor_api_database.db')
     try:
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    except:
         conn = psycopg2.connect(
             host="localhost", 
             database="flavors_api",
             user=os.environ['DB_USERNAME'],
             password=os.environ['DB_PASSWORD'])
-    except:
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         #host="localhost", 
         #database="flavors_api",
         #DB_USERNAME=os.environ['DB_USERNAME'],
