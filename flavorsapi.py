@@ -369,8 +369,8 @@ def get_recipes(rep_name):
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     #statement = "SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = ?"
     cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE title = %s", [rep_name])
-    recipes = cur.fetchone()
-    recipe = [recipe for recipe in recipes if recipe['title'] == rep_name]
+    recipe = cur.fetchone()
+    recipes = [recipe for recipe in recipes if recipe['title'] == rep_name]
     if len(recipe) == 0:
         abort(404)
     if not request.json:
