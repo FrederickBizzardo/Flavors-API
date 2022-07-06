@@ -218,8 +218,8 @@ def api_all():
     #conn = sqlite3.connect('flavor_api_database.db')
     DATABASE_URL = os.environ['DATABASE_URL']
     conn = psycopg2.connect(DATABASE_URL, sslmode='require',
-        host="ec2-3-226-163-72.compute-1.amazonaws.com", 
-        database="d431bt2i04000d",
+        host="localhost", 
+        database="flavors_api",
         DB_USERNAME=os.environ['DB_USERNAME'],
         DB_PASSWORD=os.environ['DB_PASSWORD']
         
