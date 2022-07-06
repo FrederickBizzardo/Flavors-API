@@ -221,10 +221,6 @@ def api_all():
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-        cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
-        #all_recipes = cur.execute('SELECT * FROM recipes;').fetchall()
-        cur.execute('SELECT * FROM recipes;')
-        all_recipes = cur.fetchall()
     except:
         conn = psycopg2.connect(
             host="localhost", 
@@ -287,11 +283,15 @@ def api_filter():
     query = query[:-4] + ';'
 
     #conn = sqlite3.connect('flavor_api_database.db')
-    conn = psycopg2.connect(
-        host="localhost", 
-        database="flavors_api",
-        user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'])
+    try:
+        DATABASE_URL = os.environ['DATABASE_URL']
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    except:
+        conn = psycopg2.connect(
+            host="localhost", 
+            database="flavors_api",
+            user=os.environ['DB_USERNAME'],
+            password=os.environ['DB_PASSWORD'])
 
     #conn.row_factory = dict_factory
     #cur = conn.cursor()
@@ -315,11 +315,15 @@ def insert_recipe(rep_id, title, ingredients, servings, instructions):
 # Posted user recipe(s)
 @app.route('/flavors/api/recipes', methods=['GET', 'POST'])
 def api_post():
-    conn = psycopg2.connect(
-        host="localhost", 
-        database="flavors_api",
-        user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'])
+    try:
+        DATABASE_URL = os.environ['DATABASE_URL']
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    except:
+        conn = psycopg2.connect(
+            host="localhost", 
+            database="flavors_api",
+            user=os.environ['DB_USERNAME'],
+            password=os.environ['DB_PASSWORD'])
 
     recipes = request.get_json()
     rep_id = request.json['id']
@@ -351,11 +355,15 @@ def api_post():
 # Access specific recipe by id
 @app.route('/flavors/api/recipes/<int:rep_id>', methods=['GET'])
 def get_recipes(rep_id):
-    conn = psycopg2.connect(
-        host="localhost", 
-        database="flavors_api",
-        user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'])
+    try:
+        DATABASE_URL = os.environ['DATABASE_URL']
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    except:
+        conn = psycopg2.connect(
+            host="localhost", 
+            database="flavors_api",
+            user=os.environ['DB_USERNAME'],
+            password=os.environ['DB_PASSWORD'])
 
     #cur = conn.cursor()
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
@@ -369,12 +377,15 @@ def get_recipes(rep_id):
 # Connect to database
 def get_db_connection():
     #conn = sqlite3.connect('flavor_api_database.db')
-    conn = psycopg2.connect(
-        host="localhost", 
-        database="flavors_api",
-        user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'])
-
+    try:
+        DATABASE_URL = os.environ['DATABASE_URL']
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    except:
+        conn = psycopg2.connect(
+            host="localhost", 
+            database="flavors_api",
+            user=os.environ['DB_USERNAME'],
+            password=os.environ['DB_PASSWORD'])
     #conn.row_factory = sqlite3.Row
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     
@@ -382,12 +393,15 @@ def get_db_connection():
     return cur
 
 def get_recipe(rep_id):
-    conn = psycopg2.connect(
-        host="localhost", 
-        database="flavors_api",
-        user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'])
-
+    try:
+        DATABASE_URL = os.environ['DATABASE_URL']
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    except:
+        conn = psycopg2.connect(
+            host="localhost", 
+            database="flavors_api",
+            user=os.environ['DB_USERNAME'],
+            password=os.environ['DB_PASSWORD'])
     post = conn.execute('SELECT *FROM recipes WHERE rep_id = %s', {'recipe': rep_id}).fetchone()
     conn.close()
     if post is None:
@@ -403,11 +417,15 @@ def update_recipe():
     ingredients = request.json.get('ingredients', "")
     servings = request.json.get('servings', "")
     instructions = request.json.get('instructions', "")
-    db = psycopg2.connect(
-        host="localhost", 
-        database="flavors_api",
-        user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'])
+    try:
+        DATABASE_URL = os.environ['DATABASE_URL']
+        db = psycopg2.connect(DATABASE_URL, sslmode='require')
+    except:
+        db = psycopg2.connect(
+            host="localhost", 
+            database="flavors_api",
+            user=os.environ['DB_USERNAME'],
+            password=os.environ['DB_PASSWORD'])
 
     cursor = db.cursor()
     statement = "UPDATE recipes SET title = %s, ingredients = %s, servings = %s, instructions = %s WHERE rep_id = %s"
@@ -418,11 +436,15 @@ def update_recipe():
 # Delete a recipe
 @app.route("/flavors/api/recipes/<int:rep_id>", methods=['DELETE'])
 def delete_recipe(rep_id):
-    db = psycopg2.connect(
-        host="localhost", 
-        database="flavors_api",
-        user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'])
+    try:
+        DATABASE_URL = os.environ['DATABASE_URL']
+        db = psycopg2.connect(DATABASE_URL, sslmode='require')
+    except:
+        db = psycopg2.connect(
+            host="localhost", 
+            database="flavors_api",
+            user=os.environ['DB_USERNAME'],
+            password=os.environ['DB_PASSWORD'])
 
     cursor = db.cursor()
     statement = "DELETE FROM recipes WHERE rep_id = %s"
