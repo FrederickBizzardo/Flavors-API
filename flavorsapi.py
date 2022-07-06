@@ -190,7 +190,7 @@ app = Flask(__name__)
 #    return jsonify(insert_recipe(recipe))
 
 
-DATABASE_URL = os.environ['DATABASE_URL']
+
 
 #conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
@@ -218,6 +218,7 @@ def home():
 def api_all():
     #conn = sqlite3.connect('flavor_api_database.db')
     try:
+        DATABASE_URL = os.environ['DATABASE_URL']
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     except:
         conn = psycopg2.connect(
@@ -238,8 +239,8 @@ def api_all():
     #all_recipes = cur.execute('SELECT * FROM recipes;').fetchall()
     cur.execute('SELECT * FROM recipes;')
     all_recipes = cur.fetchall()
-    #return jsonify({'recipes': all_recipes})
-    return validate({'recipes': all_recipes})
+    return jsonify({'recipes': all_recipes})
+    #return validate(instance={'recipes': cur}, schema=all_recipes)
 
 # Error handling
 @app.errorhandler(404)
