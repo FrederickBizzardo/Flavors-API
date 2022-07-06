@@ -189,7 +189,7 @@ app = Flask(__name__)
 #    return jsonify(insert_recipe(recipe))
 
 
-DATABASE_URL = os.environ['postgres://etryrrveyngcvx:7eb31e76ed3b8452749bada81b9058ee51cc902b7ea996b3a2b566ab841dbe5b@ec2-44-198-82-71.compute-1.amazonaws.com:5432/ddskfvmrts9ipg']
+DATABASE_URL = os.environ['DATABASE_URL']
 
 #conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
