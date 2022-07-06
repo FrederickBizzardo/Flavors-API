@@ -1,6 +1,7 @@
 #!flask/bin/python
 #from flask_cors import CORS
 from flask import Flask, request, jsonify, abort, make_response, url_for
+from jsonschema import validate
 
 #import sqlite3
 import psycopg2
@@ -237,7 +238,8 @@ def api_all():
     #all_recipes = cur.execute('SELECT * FROM recipes;').fetchall()
     cur.execute('SELECT * FROM recipes;')
     all_recipes = cur.fetchall()
-    return jsonify({'recipes': all_recipes})
+    #return jsonify({'recipes': all_recipes})
+    return validate({'recipes': all_recipes})
 
 # Error handling
 @app.errorhandler(404)
