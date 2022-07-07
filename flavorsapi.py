@@ -378,7 +378,7 @@ def get_recipes(rep_name):
             break
 
     
-    return jsonify({'recipe': recipes}) #can change array position from 0 - 4 
+    return jsonify({'recipe': recipes[0]}) #can change array position from 0 - 4 
     #original return jsonify({'recipe': recipe})
 
 # Connect to database
