@@ -376,7 +376,7 @@ def get_recipes(rep_name):
     rep_id = request.json['rep_id']
     recipes = [i[0] for i in cur.fetchall() if rep_id['title'] in rep_name]
 
-    return jsonify({'recipe': recipes}) #can change array position from 0 - 4 
+    return jsonify({'recipe': recipes[0]}) #can change array position from 0 - 4 
     #original return jsonify({'recipe': recipe})
 
 # Connect to database
