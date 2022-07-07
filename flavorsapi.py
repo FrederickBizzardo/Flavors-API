@@ -355,6 +355,22 @@ def api_post():
 # Access specific recipe by id
 @app.route('/flavors/api/recipes/<rep_name>', methods=['GET'])
 def get_recipes(rep_name):
+    #Old code
+    #========
+      #conn = psycopg2.connect(
+        #host="localhost", 
+        #database="flavors_api",
+        #user=os.environ['DB_USERNAME'],
+        #password=os.environ['DB_PASSWORD'])
+    #cur = conn.cursor()
+    #cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
+    #statement = "SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = ?"
+    #cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = %s", [rep_id])
+    #recipe = cur.fetchone()
+    #recipe = get_recipe_by_id(rep_id)
+    #return jsonify({'recipe': recipe}) #can change array position from 0 - 4 
+    #original return jsonify({'recipe': recipe})
+
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -370,13 +386,18 @@ def get_recipes(rep_name):
     #cur = conn.cursor()
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     #statement = "SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = ?"
-    cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE title = %s", [rep_name])
- 
-    #recipes = cur.fetchone()
-    title = request.json['title']
-    recipes = [i[0] for i in cur.fetchone() if i[0] in rep_name]
-
-    return jsonify({'recipe': recipes}) #can change array position from 0 - 4 
+    #cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE title = %s", [rep_name])
+    cur.execute("SELECT * FROM recipes;")
+    recipes = cur.fetchall()
+    
+    # .casefold ignores case strings (Whether uppercase or lower)
+    recipe = [recipe for recipe in recipes if rep_name.casefold() in recipe['title'].casefold() or rep_name.casefold() in recipe['ingredients'].casefold()]
+    #for recipe in recipes:
+    #    if rep_name in recipes:
+    #        break
+        
+    
+    return jsonify({'recipe': recipe}) #can change array position from 0 - 4         
     #original return jsonify({'recipe': recipe})
 
 # Connect to database
@@ -397,7 +418,7 @@ def get_db_connection():
     print("Connecting to database...")
     return cur
 
-def get_recipe(rep_id):
+def get_recipe(rep_name):
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -407,7 +428,7 @@ def get_recipe(rep_id):
             database="flavors_api",
             user=os.environ['DB_USERNAME'],
             password=os.environ['DB_PASSWORD'])
-    post = conn.execute('SELECT *FROM recipes WHERE rep_id = %s', {'recipe': rep_id}).fetchone()
+    post = conn.execute('SELECT *FROM recipes WHERE title = %s', {'recipe': rep_name}).fetchone()
     conn.close()
     if post is None:
         abort(404)
@@ -439,8 +460,8 @@ def update_recipe():
     return jsonify({'recipe': recipes_edit}), 201
 
 # Delete a recipe
-@app.route("/flavors/api/recipes/<int:rep_id>", methods=['DELETE'])
-def delete_recipe(rep_id):
+@app.route("/flavors/api/recipes/<int:rep_name>", methods=['DELETE'])
+def delete_recipe(rep_name):
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
         db = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -453,7 +474,7 @@ def delete_recipe(rep_id):
 
     cursor = db.cursor()
     statement = "DELETE FROM recipes WHERE rep_id = %s"
-    cursor.execute(statement, [rep_id])
+    cursor.execute(statement, [rep_name])
     db.commit()
     return ('Deleted'), 201
 
