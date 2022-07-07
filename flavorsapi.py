@@ -373,7 +373,7 @@ def get_recipes(rep_name):
     cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE title = %s", [rep_name])
     recipes = cur.fetchone()
     #title = request.json['title']
-    recipe = [recipe for recipe in recipes if rep_name in recipe['title'] ]
+    recipe = [recipe for recipe in recipes if recipe['title'] in  rep_name ]
     #recipe = get_recipe_by_id(rep_id)
     return jsonify({'recipe': recipe}) #can change array position from 0 - 4 
     #original return jsonify({'recipe': recipe})
