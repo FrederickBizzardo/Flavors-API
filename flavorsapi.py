@@ -473,7 +473,7 @@ def delete_recipe(rep_name):
             password=os.environ['DB_PASSWORD'])
 
     cursor = db.cursor()
-    statement = "DELETE FROM recipes WHERE rep_id = %s"
+    statement = "DELETE FROM recipes;"
     cursor.execute(statement, [rep_name])
     db.commit()
     return ('Deleted'), 201
