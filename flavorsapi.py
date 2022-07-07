@@ -375,7 +375,7 @@ def get_recipes(rep_name):
     recipes = cur.fetchone()
 
     for recipe in recipes:
-        if rep_name in recipes['title']:
+        if rep_name in recipe:
             
             break
     recipe[0]['title'] = request.json.get('title',recipe[0]['title'])
