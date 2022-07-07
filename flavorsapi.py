@@ -365,11 +365,15 @@ def get_recipes(rep_name):
             user=os.environ['DB_USERNAME'],
             password=os.environ['DB_PASSWORD'])
 
+    
+
     #cur = conn.cursor()
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     #statement = "SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = ?"
     cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE title = %s", [rep_name])
-    recipe = cur.fetchone()
+    recipes = cur.fetchone()
+    #title = request.json['title']
+    recipe = [recipe for recipe in recipes if rep_name in recipe['title'] ]
     #recipe = get_recipe_by_id(rep_id)
     return jsonify({'recipe': recipe}) #can change array position from 0 - 4 
     #original return jsonify({'recipe': recipe})
