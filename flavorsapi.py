@@ -460,7 +460,7 @@ def update_recipe():
     return jsonify({'recipe': recipes_edit}), 201
 
 # Delete a recipe
-@app.route("/flavors/api/recipes/<int:rep_name>", methods=['DELETE'])
+@app.route("/flavors/api/recipes/<rep_name>", methods=['DELETE'])
 def delete_recipe(rep_name):
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
