@@ -460,7 +460,7 @@ def update_recipe():
     return jsonify({'recipe': recipes_edit}), 201
 
 # Delete a recipe
-@app.route("/flavors/api/recipes/<rep_name>", methods=['DELETE'])
+@app.route("/flavors/api/recipes/<rep_id>", methods=['DELETE'])
 def delete_recipe(rep_name):
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
@@ -473,7 +473,7 @@ def delete_recipe(rep_name):
             password=os.environ['DB_PASSWORD'])
 
     cursor = db.cursor()
-    statement = "DELETE FROM recipes;"
+    statement = "DELETE FROM recipes WHERE title = %s"
     cursor.execute(statement, [rep_name])
     db.commit()
     return ('Deleted'), 201
