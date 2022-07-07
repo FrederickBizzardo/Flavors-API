@@ -374,7 +374,7 @@ def get_recipes(rep_name):
  
     #recipes = cur.fetchone()
     title = request.json['title']
-    recipes = [i[0] for i in cur.fetchall() if title['title'] in rep_name]
+    recipes = [i[0] for i in cur.fetchone() if i[0] in rep_name]
 
     return jsonify({'recipe': recipes}) #can change array position from 0 - 4 
     #original return jsonify({'recipe': recipe})
