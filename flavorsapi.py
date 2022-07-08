@@ -1,13 +1,15 @@
 #!flask/bin/python
 #from flask_cors import CORS
 from flask import Flask, request, jsonify, abort, make_response, url_for
-from jsonschema import validate
+from bs4 import BeautifulSoup
 
-import json
 #import sqlite3
 import psycopg2
 import psycopg2.extras
 import os
+import requests
+
+
 
 
 app = Flask(__name__)
@@ -190,7 +192,19 @@ app = Flask(__name__)
 #    recipe = request.get_json()
 #    return jsonify(insert_recipe(recipe))
 
+url = 'https://www.recipe-free.com/recipes/easy-swedish-meatballs---jamie-oliver-recipe/129381'
 
+result = requests.get(url).text
+
+doc = BeautifulSoup(result, 'html.parser')
+rtitle = doc.find('h1', {'class': 'red'}).text.strip()
+ringredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
+rservings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div', {'class': 'f12 f12'})[1].text.strip()
+rinstructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
+print(rtitle)
+print(ringredients)
+print(rservings)
+print(rinstructions)
 
 
 #conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -478,6 +492,29 @@ def delete_recipe(rep_name):
     db.commit()
     return ('Deleted'), 201
 
+# Posted user recipe(s)
+
+    
+try:
+    DATABASE_URL = os.environ['DATABASE_URL']
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+except:
+    conn = psycopg2.connect(
+        host="localhost", 
+        database="flavors_api",
+        user=os.environ['DB_USERNAME'],
+        password=os.environ['DB_PASSWORD'])
+   
+    
+    #conn = sqlite3.connect('flavor_api_database.db')
+cur = conn.cursor()
+    #conn.execute('INSERT INTO recipes(id, title, ingredients, servings, instructions) VALUES(?, ?, ?, ?, ?)', (id, title, ingredients, servings, instructions))
+query = '''INSERT INTO recipes(rep_id, title, ingredients, servings, instructions) VALUES(%s, %s, %s, %s, %s)'''
+record_to_insert = (5, rtitle, ringredients, rservings, rinstructions)
+cur.execute(query, record_to_insert)
+conn.commit()
+conn.close()
+ 
 #from flask_httpauth import HTTPBasicAuth
 
 #auth = HTTPBasicAuth()   

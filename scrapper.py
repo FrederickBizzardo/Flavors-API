@@ -6,13 +6,11 @@ url = 'https://www.recipe-free.com/recipes/easy-swedish-meatballs---jamie-oliver
 result = requests.get(url).text
 
 doc = BeautifulSoup(result, 'html.parser')
-
-heading = doc.find('div', class_= 'col-md-12 for-padding-col')
-#ingredients = doc.find()
-p_tags = heading.find_all('p')
-ingredients = []
-for elem in p_tags:
-    p_links = elem.find_all('p')
-for i in p_links:
-    ingredients.append(i.text)
+title = doc.find('h1', {'class': 'red'}).text.strip()
+ingredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
+servings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div', {'class': 'f12 f12'})[1].text.strip()
+instructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
+print(title)
 print(ingredients)
+print(servings)
+print(instructions)
