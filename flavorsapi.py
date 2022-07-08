@@ -191,20 +191,23 @@ app = Flask(__name__)
 #def api_add_recipe_list():
 #    recipe = request.get_json()
 #    return jsonify(insert_recipe(recipe))
+try: 
+    #url = 'https://www.recipe-free.com/recipes/easy-swedish-meatballs---jamie-oliver-recipe/129381'
+    #url = 'https://www.recipe-free.com/recipes/best-african-vegetarian-stew/129364'
+    url = 'https://www.recipe-free.com/recipes/real-coconut-chicken-tenders-recipe-joel-robuchon-recipe/129450'
+    result = requests.get(url).text
 
-url = 'https://www.recipe-free.com/recipes/easy-swedish-meatballs---jamie-oliver-recipe/129381'
-
-result = requests.get(url).text
-
-doc = BeautifulSoup(result, 'html.parser')
-rtitle = doc.find('h1', {'class': 'red'}).text.strip()
-ringredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
-rservings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div', {'class': 'f12 f12'})[1].text.strip()
-rinstructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
-print(rtitle)
-print(ringredients)
-print(rservings)
-print(rinstructions)
+    doc = BeautifulSoup(result, 'html.parser')
+    rtitle = doc.find('h1', {'class': 'red'}).text.strip()
+    ringredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
+    rservings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div', {'class': 'f12 f12'})[1].text.strip()
+    rinstructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
+    print(rtitle)
+    print(ringredients)
+    print(rservings)
+    print(rinstructions)
+except:
+    print("Failed to establish a new connection")
 
 
 #conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -278,7 +281,7 @@ def api_filter():
 
     if rep_id:
         query += 'rep_id=? AND' 
-        to_filter.append(id)
+        to_filter.append(rep_id)
     if title:
         query += 'title=? AND'
         to_filter.append(title)
@@ -340,7 +343,9 @@ def api_post():
             password=os.environ['DB_PASSWORD'])
 
     recipes = request.get_json()
-    rep_id = request.json['rep_id']
+ 
+    #rep_id = request.json['rep_id']
+    
     title = request.json['title']
     ingredients = request.json.get('ingredients', "")
     servings = request.json.get('servings', "")
@@ -348,7 +353,7 @@ def api_post():
     #conn = sqlite3.connect('flavor_api_database.db')
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     #conn.execute('INSERT INTO recipes(id, title, ingredients, servings, instructions) VALUES(?, ?, ?, ?, ?)', (id, title, ingredients, servings, instructions))
-    cur.execute('INSERT INTO recipes(rep_id, title, ingredients, servings, instructions) VALUES(%s, %s, %s, %s, %s);', (rep_id, title, ingredients, servings, instructions))
+    cur.execute('INSERT INTO recipes(title, ingredients, servings, instructions) VALUES(%s, %s, %s, %s);', (title, ingredients, servings, instructions))
     conn.commit()
     conn.close()
     return jsonify({'recipe': recipes}), 201
@@ -474,8 +479,8 @@ def update_recipe():
     return jsonify({'recipe': recipes_edit}), 201
 
 # Delete a recipe
-@app.route("/flavors/api/recipes/<rep_name>", methods=['DELETE'])
-def delete_recipe(rep_name):
+@app.route("/flavors/api/recipes/<int:rep_id>", methods=['DELETE'])
+def delete_recipe(rep_id):
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
         db = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -487,14 +492,14 @@ def delete_recipe(rep_name):
             password=os.environ['DB_PASSWORD'])
 
     cursor = db.cursor()
-    statement = "DELETE FROM recipes WHERE title = %s"
-    cursor.execute(statement, [rep_name])
+    statement = "DELETE FROM recipes WHERE rep_id = %s"
+    cursor.execute(statement, [rep_id])
     db.commit()
     return ('Deleted'), 201
 
 # Posted user recipe(s)
-
-    
+#@app.route('/flavors/api/recipes', methods=['GET', 'POST'])
+#def api_recipe_request():    
 try:
     DATABASE_URL = os.environ['DATABASE_URL']
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -505,14 +510,22 @@ except:
         user=os.environ['DB_USERNAME'],
         password=os.environ['DB_PASSWORD'])
    
-    
-    #conn = sqlite3.connect('flavor_api_database.db')
+    #try: 
+
+        #cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = %s", [rep_id])
+        #cur.execute("SELECT * FROM recipes;")
+        #recipes = cur.fetchall()
+        #rrep_id = recipes['rep_id'] + 1, 
+        #conn = sqlite3.connect('flavor_api_database.db')
 cur = conn.cursor()
-    #conn.execute('INSERT INTO recipes(id, title, ingredients, servings, instructions) VALUES(?, ?, ?, ?, ?)', (id, title, ingredients, servings, instructions))
-query = '''INSERT INTO recipes(rep_id, title, ingredients, servings, instructions) VALUES(%s, %s, %s, %s, %s)'''
-record_to_insert = (5, rtitle, ringredients, rservings, rinstructions)
+        #conn.execute('INSERT INTO recipes(id, title, ingredients, servings, instructions) VALUES(?, ?, ?, ?, ?)', (id, title, ingredients, servings, instructions))
+query = '''INSERT INTO recipes(title, ingredients, servings, instructions) VALUES(%s, %s, %s, %s)'''
+record_to_insert = (rtitle, ringredients, rservings, rinstructions)
 cur.execute(query, record_to_insert)
 conn.commit()
+        
+    ##except:
+    ##    print("Couldn't fetch recipes. Make sure you're have internet connection.")
 conn.close()
  
 #from flask_httpauth import HTTPBasicAuth
