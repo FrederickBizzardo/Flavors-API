@@ -46,6 +46,19 @@ for i, link in enumerate(links[:120], url_no):
     #for dict in links_dict:
     #print(links_dict)
     print(links_dict[name])
+    #code to get info from each link stored in links_dict
+    url_grapper = links_dict[name]
+    result = requests.get(url_grapper).text    
+    doc = BeautifulSoup(result, 'html.parser')
+    title = doc.find('h1', {'class': 'red'}).text.strip()
+    ingredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
+    servings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div', {'class': 'f12 f12'})[1].text.strip()
+    instructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
+    print(f'title: {title}')
+    print(f'ingredients: {ingredients}')
+    print(f'servings: {servings}')
+    print(f'instructions: {instructions}')
+
         #print(f"{links_dict['url']}")
 #for link in links[:120]:
     #while url_link <= 8:
