@@ -220,11 +220,10 @@ try:
         #print(f'url {url_no}: {link}')
         name = f'url {url_no}'
         links_dict = {name : link}
-        #links_dict = {f'url {url_no}': link}
+  
         url_no += 1
-        #for dict in links_dict:
-        #print(links_dict)
-        print(links_dict[name])
+  
+        #print(links_dict[name])
         #code to get info from each link stored in links_dict
         url_grapper = links_dict[name]
         result = requests.get(url_grapper).text    
@@ -237,6 +236,7 @@ try:
         print(ringredients)
         print(rservings)
         print(rinstructions)
+        break
 except:
     print("Failed to establish a new connection")
 
