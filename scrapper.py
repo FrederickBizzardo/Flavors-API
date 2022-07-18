@@ -1,17 +1,53 @@
 from bs4 import BeautifulSoup
-from urllib.parse import urljoin
 import requests
 
-url = 'https://www.recipe-free.com/recipes/easy-swedish-meatballs---jamie-oliver-recipe/129381'
+#url = 'https://www.recipe-free.com/recipes/easy-swedish-meatballs---jamie-oliver-recipe/129381'
+#url = 'https://www.recipe-free.com/categories/meat-recipes/1'
 
-result = requests.get(url).text
+#result = requests.get(url).text
 
-doc = BeautifulSoup(result, 'html.parser')
-title = doc.find('h1', {'class': 'red'}).text.strip()
-ingredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
-servings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div', {'class': 'f12 f12'})[1].text.strip()
-instructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
-print(title)
-print(ingredients)
-print(servings)
-print(instructions)
+#doc = BeautifulSoup(result, 'html.parser')
+
+
+#title = doc.find('h1', {'class': 'red'}).text.strip()
+#ingredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
+#servings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div', {'class': 'f12 f12'})[1].text.strip()
+#instructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
+#print(f'title: {title}')
+#print(f'ingredients: {ingredients}')
+#print(f'servings: {servings}')
+#print(f'instructions: {instructions}')
+
+page = 1
+url_no = 1
+titles = []
+links = []
+links_dict = {}
+#url_link = 1
+while page != 7:
+    url = f"https://www.recipe-free.com/categories/meat-recipes/{page}"
+    #print(url)
+    response = requests.get(url)
+    html = response.content
+    soup = BeautifulSoup(html, "lxml")
+    for a in soup.find('div', {'class': 'category_content centerindent for-this'}).findAll('a', {'class': 'day'}):
+        titles.append(a.get_text(strip=True))
+        links.append(a.get('href'))
+        #print(titles)
+    page = page + 1
+for title in titles[:80]:
+    print(title)
+for i, link in enumerate(links[:120], url_no):
+    #print(f'url {url_no}: {link}')
+    name = f'url {url_no}'
+    links_dict = {name : link}
+    #links_dict = {f'url {url_no}': link}
+    url_no += 1
+    #for dict in links_dict:
+    #print(links_dict)
+    print(links_dict[name])
+        #print(f"{links_dict['url']}")
+#for link in links[:120]:
+    #while url_link <= 8:
+        #print(f'Url {url_link}: {link}')
+        #url_link = url_link + 1
