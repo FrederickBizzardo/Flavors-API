@@ -232,11 +232,11 @@ try:
         ringredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
         rservings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div', {'class': 'f12 f12'})[1].text.strip()
         rinstructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
-        print(rtitle)
-        print(ringredients)
-        print(rservings)
-        print(rinstructions)
-        break
+        #print(rtitle)
+        #print(ringredients)
+        #print(rservings)
+        #print(rinstructions)
+        
 except:
     print("Failed to establish a new connection")
 
