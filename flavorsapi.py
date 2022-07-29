@@ -1,6 +1,6 @@
 #!flask/bin/python
 #from flask_cors import CORS
-from flask import Flask, request, jsonify, abort, make_response, url_for
+from flask import Flask, request, jsonify, abort, make_response, url_for, render_template
 from bs4 import BeautifulSoup
 
 #import sqlite3
@@ -194,25 +194,47 @@ app = Flask(__name__)
 try: 
     #url = 'https://www.recipe-free.com/recipes/easy-swedish-meatballs---jamie-oliver-recipe/129381'
     #url = 'https://www.recipe-free.com/recipes/best-african-vegetarian-stew/129364'
-    url = 'https://www.recipe-free.com/recipes/real-coconut-chicken-tenders-recipe-joel-robuchon-recipe/129450'
-    result = requests.get(url).text
-  
-    doc = BeautifulSoup(result, 'html.parser')
-    rtitle = doc.find('h1', {'class': 'red'}).text.strip()
-    ringredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
-    rservings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div', {'class': 'f12 f12'})[1].text.strip()
-    rinstructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
-    print(rtitle)
-    print(ringredients)
-    print(rservings)
-    print(rinstructions)
+    #url = 'https://www.recipe-free.com/recipes/real-coconut-chicken-tenders-recipe-joel-robuchon-recipe/129450'
+    #result = requests.get(url).text
 
-    #page = 1
-    #url_no = 1
-    #titles = []
-    #links = []
-    #links_dict = {}
-    #url_link = 1
+    #url = 'https://www.recipe-free.com/recipes/easy-swedish-meatballs---jamie-oliver-recipe/129381'
+
+
+    #result = requests.get(url).text
+
+    #doc = BeautifulSoup(result, 'html.parser')
+
+
+    #rtitle = doc.find('h1', {'class': 'red'}).text.strip()
+    #ringredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
+    #rservings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div', {'class': 'f12 f12'})[1].text.strip()
+    #rinstructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
+    #print(f'title: {rtitle}')
+    #print(f'ingredients: {ringredients}')
+    #print(f'servings: {rservings}')
+    #print(f'instructions: {rinstructions}')
+
+    
+    page = 1
+    url_no = 1
+    titles = []
+    links = []
+    links_dict = {}
+    url_link = 1
+    #code to scrappe all unknown web pagination and get all links
+    while page <= 10:
+        url = f'https://www.recipe-free.com/recipes/page/{page}'
+        result = requests.get(url).text
+        doc = BeautifulSoup(result, 'html.parser')
+        links_list = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('a')
+        for link in links_list:
+            links.append(link.get('href'))
+            links_dict[url_link] = link.get('href')
+            url_link += 1
+        page += 1
+    #print(links_dict)
+    
+
     #while page != 7:
         #url = f"https://www.recipe-free.com/categories/meat-recipes/{page}"
         #print(url)
@@ -228,25 +250,25 @@ try:
         #print(title)
     #for i, link in enumerate(links[:120], url_no):
         #print(f'url {url_no}: {link}')
-        #name = f'url {url_no}'
-        #links_dict = {name : link}
-  
-        #url_no += 1
-  
+        name = f'url {url_no}'
+        links_dict = {name : link}
+        links_dict = {f'url {url_no}': link}
+        url_no += 1
+        #for dict in links_dict:
+        #print(links_dict)
         #print(links_dict[name])
         #code to get info from each link stored in links_dict
-        #url_grapper = links_dict[name]
-        #result = requests.get(url_grapper).text    
-        #doc = BeautifulSoup(result, 'html.parser')
-        #rtitle = doc.find('h1', {'class': 'red'}).text.strip()
-        #ringredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
-        #rservings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div', {'class': 'f12 f12'})[1].text.strip()
-        #rinstructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
-        #print(rtitle)
-        #print(ringredients)
-        #print(rservings)
-        #print(rinstructions)
-        
+        url_grapper = links_dict[name]
+        result = requests.get(url_grapper).text    
+        doc = BeautifulSoup(result, 'html.parser')
+        rtitle = doc.find('h1', {'class': 'red'}).text.strip()
+        ringredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
+        rservings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div', {'class': 'f12 f12'})[1].text.strip()
+        rinstructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
+        print(rtitle)
+        print(ringredients)
+        print(rservings)
+        print(rinstructions)
 except:
     print("Failed to establish a new connection")
 
@@ -263,15 +285,66 @@ def dict_factory(cursor, row):
 # Home screen
 @app.route('/', methods=['GET'])
 def home():
-    return '''
-    <style>
-    * {
-        font-family: monospace;
+    try:
+        DATABASE_URL = os.environ['DATABASE_URL']
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    except:
+        conn = psycopg2.connect(
+            host="localhost", 
+            database="flavors_api",
+            user=os.environ['DB_USERNAME'],
+            password=os.environ['DB_PASSWORD'])
+
+    cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
+    #all_recipes = cur.execute('SELECT * FROM recipes;').fetchall()
+    cur.execute('SELECT * FROM recipes;')
+    recipes = cur.fetchall()
+
+    return render_template('index.html', recipes=recipes)
+    #return '''
+    '''<style>
+    @font-face {
+        font-family: 'gotham-black';
+        src: url("Gotham-Black.otf");
+    }
+    p, h1, h2 {
+        font-family: 'gotham-black', sans-serif;
         }
+    input {
+        text-align: center;
+        font-family: monospace;
+        font-size: 15px;
+        border: 3px solid black;
+        width: 350px;
+        height: 30px;
+    }
+    .discl {
+        font-weight: bold;
+    }
+    code {
+        padding: 20px, 20px, 0, 20px;
+    }
+    .box {
+        width: 100%;
+        heigth: 30%;
+        border: 3px solid black;      
+    }
     </style>
     <h1>Flavors API</h1>
     <p>This is a recipe api made with ❤️. Brought to you by Homely Flavor.</p>
-    <p>To access the recipe api's list, you need to go to the <a href="http://127.0.0.1:5000/flavors/api/recipes">http://127.0.0.1:5000/flavors/api/recipes</a> on your local machine or, <a href="https://flavorsapi.herokuapp.com/flavors/api/recipes">https://flavorsapi.herokuapp.com/flavors/api/recipes</a> our website</p>'''
+    <p>To access the recipe api's list, you need to go to the <a href="http://localhost:5000/flavors/api/recipes">http://localhost:5000/flavors/api/recipes</a> on your local machine.</p>
+    <p>Or, <a href="https://flavorsapi.herokuapp.com/flavors/api/recipes">https://flavorsapi.herokuapp.com/flavors/api/recipes</a> from our website</p>
+    <p>Please help us with maintaining our database by posting your own recipes</p>
+    <br>
+    <div class="box">
+        <code><span class='discl'>Disclaimer:</span><br><br>
+            1. When posting a recipe on our website, this means you are the sole creator of that recipe.<br>
+            2. Once your recipe is inserted onto our database. Flavor will have full copyright over it or them. Meaning, Flavor could publish, distribute, sell, modify, delete, ...<br>   
+        </code>
+    </div>
+    <h2>Title</h2>
+    <input placeholder="Type"/>
+    '''
  
 @app.route('/flavors/api/recipes', methods=['GET'])
 def api_all():
@@ -457,7 +530,7 @@ def get_recipes(rep_name):
     #        break
         
     
-    return jsonify({'recipe': recipe}) #can change array position from 0 - 4         
+    return jsonify({'recipe': recipe}) #can change array position from 0 - 4          
     #original return jsonify({'recipe': recipe})
 
 # Connect to database
@@ -495,14 +568,17 @@ def get_recipe(rep_name):
     return post
 
 # Modify recipe
-@app.route("/flavors/api/recipes", methods=["PUT"])
-def update_recipe():
+@app.route("/flavors/api/recipes/<int:rep_id>", methods=["PUT"])
+def update_recipe(rep_id):
     recipes_edit = request.get_json()
-    rep_id = request.json['rep_id']
-    title = request.json['title']
-    ingredients = request.json.get('ingredients', "")
-    servings = request.json.get('servings', "")
-    instructions = request.json.get('instructions', "")
+    #code to update recipe in database by id (rep_id) postgresql using psycopg2.connect
+    #conn = sqlite3.connect('flavor_api_database.db')
+
+    #rep_id = request.json['rep_id']
+    #title = request.json.get('title', '')
+    #ingredients = request.json.get('ingredients', "")
+    #servings = request.json.get('servings', "")
+    #instructions = request.json.get('instructions', "")
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
         db = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -514,8 +590,10 @@ def update_recipe():
             password=os.environ['DB_PASSWORD'])
 
     cursor = db.cursor()
-    statement = "UPDATE recipes SET title = %s, ingredients = %s, servings = %s, instructions = %s WHERE rep_id = %s"
-    cursor.execute(statement, [title, ingredients, servings, instructions, rep_id])
+    cursor.execute("UPDATE recipes SET title = %s, ingredients = %s, servings = %s, instructions = %s WHERE rep_id = %s", (recipes_edit['title'], recipes_edit['ingredients'], recipes_edit['servings'], recipes_edit['instructions'], rep_id))
+  
+    #statement =  "UPDATE recipes SET title = %s, ingredients = %s, servings = %s, instructions = %s WHERE rep_id = %s"
+    #cursor.execute(statement, [title, ingredients, servings, instructions, rep_id])
     db.commit()
     return jsonify({'recipe': recipes_edit}), 201
 
@@ -551,24 +629,26 @@ except:
         user=os.environ['DB_USERNAME'],
         password=os.environ['DB_PASSWORD'])
    
-    #try: 
+    '''try: 
 
-        #cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = %s", [rep_id])
-        #cur.execute("SELECT * FROM recipes;")
-        #recipes = cur.fetchall()
-        #rrep_id = recipes['rep_id'] + 1, 
-        #conn = sqlite3.connect('flavor_api_database.db')
-cur = conn.cursor()
+        cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = %s", [rep_id])
+        cur.execute("SELECT * FROM recipes;")
+        recipes = cur.fetchall()
+        rrep_id = recipes['rep_id'] + 1, 
+        conn = sqlite3.connect('flavor_api_database.db')'''
+try:
+    cur = conn.cursor()
         #conn.execute('INSERT INTO recipes(id, title, ingredients, servings, instructions) VALUES(?, ?, ?, ?, ?)', (id, title, ingredients, servings, instructions))
-query = '''INSERT INTO recipes(title, ingredients, servings, instructions) VALUES(%s, %s, %s, %s)'''
-record_to_insert = (rtitle, ringredients, rservings, rinstructions)
-cur.execute(query, record_to_insert)
-conn.commit()
+    query = '''INSERT INTO recipes(title, ingredients, servings, instructions) VALUES(%s, %s, %s, %s)'''
+    record_to_insert = (rtitle, ringredients, rservings, rinstructions)
+    cur.execute(query, record_to_insert)
+    conn.commit()
         
     ##except:
     ##    print("Couldn't fetch recipes. Make sure you're have internet connection.")
-conn.close()
- 
+    conn.close()
+except:
+    print("No data collected, Please connect to the internet.")
 #from flask_httpauth import HTTPBasicAuth
 
 #auth = HTTPBasicAuth()   
@@ -578,4 +658,3 @@ conn.close()
 #    if username == 'fred':
 #        return 'python'
 #    return None
-

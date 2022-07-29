@@ -1,0 +1,76 @@
+@font-face {
+    font-family: 'gotham-black';
+    src: url("/static/fonts/Gotham-Black.otf");
+}
+@font-face {
+    font-family: 'gotham-medium';
+    src: url("/static/fonts/GothamMedium.ttf");
+}
+h1, h2 {
+    font-family: 'gotham-black', sans-serif;
+    }
+p {
+    font-family: 'gotham-medium', sans-serif;
+}
+input {
+    text-align: center;
+    font-family: monospace;
+    font-size: 15px;
+    border: 3px solid black;
+    width: 350px;
+    height: 30px;
+}
+.discl {
+    font-weight: bold;
+}
+code {
+    padding: 20px, 20px, 0, 20px;
+}
+/*.box {
+    width: 100%;
+    height: 30%;
+    border: 3px solid black;      
+}*/
+
+.instruct_btn {
+    font-family: 'gotham-black', sans-serif;
+    height: 30px;
+    width: 60px;
+    color: black;
+    background-color: white;
+    border: 3px solid black;
+    text-align: center;
+    display: inline-block;
+    
+}
+
+.instruct_btn:hover {
+    color: white;
+    background-color: black;
+}
+
+.rep_post {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex: 3;
+    margin-bottom: 60px;
+}
+
+label {
+    font-family: 'gotham-medium', sans-serif;
+    font-size: 25px;
+    padding: 30px 0 5px 0;
+}
+
+.instructions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex: 3;
+    justify-content: left;
+}
+
+.instruct_ipt {
+    margin-right: 20px;
+}
