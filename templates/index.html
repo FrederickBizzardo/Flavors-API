@@ -9,36 +9,6 @@
     <p>Or, <a href="https://flavorsapi.herokuapp.com/flavors/api/recipes">https://flavorsapi.herokuapp.com/flavors/api/recipes</a> from our website</p>
     <p>Please help us with maintaining our database by posting your own recipes</p>
     <br>
-    <div class="box">
-        <code><span class='discl'>Disclaimer:</span><br><br>
-            1. When posting a recipe on our website, this means you are the sole creator of that recipe.<br>
-            2. Once your recipe is inserted onto our database. Flavor will have full copyright over it or them. Meaning, Flavor could publish, distribute, sell, modify, delete, ...<br>   
-        </code>
-    </div>
-    <br>
-    <h2>Recipe</h2>
-    <!--<br>-->
-    <form class="rep_post">
-        <label for="title">Title</label>
-        <input placeholder="Type"/>
-
-        <label for="ingredients">Ingredients</label>
-        <input placeholder="Type"/>
-
-        <label for="servings">Servings</label>
-        <input placeholder="Type"/>
-
-        <label for="instructions">Instructions</label>
-        <div class="instructions">
-            <input class="instruct_ipt" placeholder="Type"/>
-            <botton class="instruct_btn" type="submit">Add</botton>
-        </div>
-    </form>
-    {%for recipe in recipes %}
-        <a href="#">
-            <h2>{{ recipe['title'] }}</h2>
-        </a>
-        <span class="badge badge-primary">{{ recipe['created'] }}</span>
-        <hr>
+    
     {% endfor %}
 {% endblock %}
