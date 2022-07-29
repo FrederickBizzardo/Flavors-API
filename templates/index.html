@@ -6,7 +6,7 @@
     <h1>{% block title %} Flavors API {% endblock %}</h1>
     <p>This is a recipe api made with ❤️. Brought to you by Homely Flavor.</p>
     <p>To access the recipe api's list, you need to go to the <a href="{{ url_for('api_all')}}">http://localhost:5000/flavors/api/recipes</a> on your local machine.</p>
-    <p>Or, <a href="https://flavorsapi.herokuapp.com/flavors/api/recipes">https://flavorsapi.herokuapp.com/flavors/api/recipes</a> from our website</p>
+    <p>Or, <a href="{{ url_for('api_all')}}">https://flavorsapi.herokuapp.com/flavors/api/recipes</a> from our website</p>
     <p>Please help us with maintaining our database by posting your own recipes</p>
     <br>
     <div class="box">
