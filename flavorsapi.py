@@ -1,6 +1,6 @@
 #!flask/bin/python
 #from flask_cors import CORS
-from flask import Flask, request, jsonify, abort, make_response, url_for, render_template
+from flask import Flask, request, jsonify, abort, make_response, url_for, render_template, flash, redirect
 from bs4 import BeautifulSoup
 
 #import sqlite3
@@ -8,12 +8,13 @@ import psycopg2
 import psycopg2.extras
 import os
 import requests
+import time
 
 
 
 
 app = Flask(__name__)
-
+app.config['SECRET_KEY'] = 'your secret key'
 
 #CORS(app, resources={r"/*": {"orgins": "*"}})
 
@@ -301,50 +302,66 @@ def home():
     recipes = cur.fetchall()
 
     return render_template('index.html', recipes=recipes)
-    #return '''
-    '''<style>
-    @font-face {
-        font-family: 'gotham-black';
-        src: url("Gotham-Black.otf");
-    }
-    p, h1, h2 {
-        font-family: 'gotham-black', sans-serif;
-        }
-    input {
-        text-align: center;
-        font-family: monospace;
-        font-size: 15px;
-        border: 3px solid black;
-        width: 350px;
-        height: 30px;
-    }
-    .discl {
-        font-weight: bold;
-    }
-    code {
-        padding: 20px, 20px, 0, 20px;
-    }
-    .box {
-        width: 100%;
-        heigth: 30%;
-        border: 3px solid black;      
-    }
-    </style>
-    <h1>Flavors API</h1>
-    <p>This is a recipe api made with ❤️. Brought to you by Homely Flavor.</p>
-    <p>To access the recipe api's list, you need to go to the <a href="http://localhost:5000/flavors/api/recipes">http://localhost:5000/flavors/api/recipes</a> on your local machine.</p>
-    <p>Or, <a href="https://flavorsapi.herokuapp.com/flavors/api/recipes">https://flavorsapi.herokuapp.com/flavors/api/recipes</a> from our website</p>
-    <p>Please help us with maintaining our database by posting your own recipes</p>
-    <br>
-    <div class="box">
-        <code><span class='discl'>Disclaimer:</span><br><br>
-            1. When posting a recipe on our website, this means you are the sole creator of that recipe.<br>
-            2. Once your recipe is inserted onto our database. Flavor will have full copyright over it or them. Meaning, Flavor could publish, distribute, sell, modify, delete, ...<br>   
-        </code>
-    </div>
-    <h2>Title</h2>
-    <input placeholder="Type"/>
-    '''
+
+def get_recipe_id(rep_id):
+    try:
+        DATABASE_URL = os.environ['DATABASE_URL']
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    except:
+        conn = psycopg2.connect(
+            host="localhost", 
+            database="flavors_api",
+            user=os.environ['DB_USERNAME'],
+            password=os.environ['DB_PASSWORD'])
+
+    cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
+    cur.execute('SELECT * FROM recipes WHERE rep_id = %s', (rep_id,))
+    recipes = cur.fetchone()
+
+    conn.close()
+    if recipes is None:
+        abort(404)
+    return recipes
+
+@app.route('/<int:rep_id>')
+def recipe_id(rep_id):
+    recipes = get_recipe_id(rep_id)
+    return render_template('recipes.html', recipes=recipes)
+
+@app.route('/create', methods=('GET', 'POST'))
+def create():
+    if request.method == 'POST':
+        title = request.form['title']
+        ingredients = request.form['ingredients']
+        servings = request.form['servings']
+        instructions = request.form['instructions']
+
+        if not title:
+            flash('Title is required!')
+        if not ingredients:
+            flash('Ingredients is required!')
+        if not servings:
+            flash('Servings is required!')
+        if not instructions:
+            flash('Instructions is required!')
+        else:
+            try:
+                DATABASE_URL = os.environ['DATABASE_URL']
+                conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+            except:
+                conn = psycopg2.connect(
+                    host="localhost", 
+                    database="flavors_api",
+                    user=os.environ['DB_USERNAME'],
+                    password=os.environ['DB_PASSWORD'])
+            cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)      
+            cur.execute('INSERT INTO recipes (title, ingredients, servings, instructions) VALUES (%s, %s, %s, %s)',
+                         (title, ingredients, servings, instructions))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('home'))
+    ingredients = request.form.get('ingredients')
+    return render_template('create.html', ingredients=ingredients)
  
 @app.route('/flavors/api/recipes', methods=['GET'])
 def api_all():

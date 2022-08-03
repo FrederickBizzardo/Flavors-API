@@ -1,0 +1,57 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename= 'css/create.css') }}">
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="title">{% block title %} Create a New Recipe {% endblock %}</h1>
+<form method="POST">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" name="title"
+               placeholder="Recipe Title" class="form-control"
+               value="{{ request.form['title'] }}"></input>
+    </div>
+
+    
+
+    <div class="form-group">
+        
+        <label for="ingredients">Ingredients</label>
+        <textarea name="ingredients" placeholder="Ingredients"
+                  class="form-control">{{ request.form['ingredients'] }}</textarea>
+        <div class="add">
+            <button class="second_btn" name='ingredients'>Add</button>
+        </div>
+        
+    </div>
+    <div class="delete">
+        <button class="second_btn"><a> {{ ingredients }}</a><i class="fa fa-close"></i> </button>
+    </div>
+
+    <div class="form-group">
+        <label for="servings">Servings</label>
+        <input type="text" name="servings"
+               placeholder="Servings" class="form-control"
+               value="{{ request.form['servings'] }}"></input>
+    </div>
+
+    <div class="form-group">
+        <label for="instructions">Instructions</label>
+        <textarea name="instructions" placeholder="Instructions"
+                  class="form-control">{{ request.form['instructions'] }}</textarea>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<div class="box">
+    <code><span class='discl'>Disclaimer:</span><br><br>
+        1. When posting a recipe on our website, this means you are the sole creator of that recipe.<br>
+        2. Once your recipe is inserted onto our database. Flavor will have full copyright over it or them. Meaning, Flavor could publish, distribute, sell, modify, delete, ...<br>   
+    </code>
+</div>
+{% endblock %}
