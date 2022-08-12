@@ -335,6 +335,7 @@ def create():
         ingredients = request.form['ingredients']
         servings = request.form['servings']
         instructions = request.form['instructions']
+    
 
         if not title:
             flash('Title is required!')
@@ -344,6 +345,7 @@ def create():
             flash('Servings is required!')
         if not instructions:
             flash('Instructions is required!')
+        
         else:
             try:
                 DATABASE_URL = os.environ['DATABASE_URL']
@@ -360,7 +362,17 @@ def create():
             conn.commit()
             conn.close()
             return redirect(url_for('home'))
-    ingredients = request.form.get('ingredients')
+    
+    # Fix code below, ingredients add button triggers instructions button
+    ingredients = []
+    #instructions = []
+    
+    ingredients = ingredients.append(ingredients) 
+    ingredients = request.form.get('ingredients') 
+    
+    
+    #instructions = instructions.append(instructions) 
+    #instructions = request.form.get('instructions') 
     return render_template('create.html', ingredients=ingredients)
  
 @app.route('/flavors/api/recipes', methods=['GET'])

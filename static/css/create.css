@@ -71,17 +71,57 @@ textarea:focus {
     cursor: pointer;
   }
 
+.add {
+    padding-top: 20px;
+  }
 
 a {
     padding-right: 15px;
+}
+
+.add_btn {
+    color: white;
+    text-decoration: none;
+}
+
+.add_btn:hover {
+    color: white;
+    text-decoration: none;
 }
   
   /* Darker background on mouse-over */
 .second_btn:hover {
     background-color: #0072ed;
     border: 1px solid #0072ed;
+}
+
+.delete {
+    padding-bottom: 30px;
+}
+
+.add_btn_instruct {
+    color: white;
+    text-decoration: none;
+}
+
+.third_btn {
+    background-color: #007aff;
+    border: 1px solid #007aff;
+    border-radius: 10px;
+    color: white;
+    padding: 10px 16px;
+    font-size: 16px;
+    cursor: pointer;
   }
 
+.third_btn:hover {
+    background-color: #0072ed;
+    border: 1px solid #0072ed;
+}
+
+.instruct_delete {
+    padding-bottom: 30px;
+}
 
 /*code {
     padding: 20px 20px 0 20px;

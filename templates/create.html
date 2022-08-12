@@ -41,6 +41,12 @@
         <label for="instructions">Instructions</label>
         <textarea name="instructions" placeholder="Instructions"
                   class="form-control">{{ request.form['instructions'] }}</textarea>
+        <div class="add_instruct">
+            <button class="second_btn" name='instructions'>Add</button>
+        </div>
+    </div>
+    <div class="instruct_delete">
+        <button class="third_btn"><a> {{ instructions }}</a><i class="fa fa-close"></i> </button>
     </div>
 
     <div class="form-group">
