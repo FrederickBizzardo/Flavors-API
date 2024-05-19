@@ -1,10 +1,11 @@
 import gc
-import greenlet
 import weakref
-import unittest
 
 
-class WeakRefTests(unittest.TestCase):
+import greenlet
+from . import TestCase
+
+class WeakRefTests(TestCase):
     def test_dead_weakref(self):
         def _dead_greenlet():
             g = greenlet.greenlet(lambda: None)
