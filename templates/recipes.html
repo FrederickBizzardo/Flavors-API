@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
+
 {% block content %}
-    <h2>{% block title %} {{ recipes['title'] }} {% endblock %}</h2>
-    <span class="badge badge-primary">{{ recipes['ingredients'] }}</span>
-    <p>{{ recipes['instructions'] }}</p>
+    <h2>{% block title %} {{ recipe['title'] }} {% endblock %}</h2>
+    <img src="{{ url_for('image', id=recipe['rep_id']) }}" alt="{{ recipe['title'] }}" class="img-fluid">
+    <span class="badge badge-primary">{{ recipe['ingredients'] }}</span>
+    <p>{{ recipe['instructions'] }}</p>
 {% endblock %}

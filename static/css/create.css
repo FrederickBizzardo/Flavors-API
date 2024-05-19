@@ -6,17 +6,27 @@
     font-family: 'gotham-medium';
     src: url("/static/fonts/GothamMedium.ttf");
 }
+@font-face {
+    font-family: 'onest-regular';
+    src: url("/static/fonts/Onest-Regular.ttf");
+}
+
+@font-face {
+    font-family: 'onest-black';
+    src: url("/static/fonts/Onest-Black.ttf");
+}
 
 html, body {
     max-width: 100%;
     overflow-x: hidden;
+    font-family: 'onest-regular', sans-serif;
 }
 
 h1, h2 {
-    font-family: 'gotham-black', sans-serif;
+    font-family: 'onest-black', sans-serif;
     }
 p {
-    font-family: 'gotham-medium', sans-serif;
+    font-family: 'onest-regular', sans-serif;
 }
 /*input {
     text-align: center;
@@ -158,7 +168,7 @@ a {
 }*/
 
 label {
-    font-family: 'gotham-medium', sans-serif;
+    font-family: 'onest-regular', sans-serif;
     font-size: 25px;
     /*padding: 30px 0 5px 0;*/
 }

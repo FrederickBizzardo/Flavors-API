@@ -1,19 +1,16 @@
 <!doctype html>
-<link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
 {% extends 'base.html' %}
+<!--<link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">-->
 
 {% block content %}
     <h1>{% block title %} Flavors API {% endblock %}</h1>
-    <p>This is a recipe api made with ❤️. Brought to you by Homely Flavor.</p>
-    <p>To access the recipe api's list, you need to go to the <a href="{{ url_for('api_all')}}">http://localhost:5000/flavors/api/recipes</a> on your local machine.</p>
-    <p>Or, <a href="{{ url_for('api_all')}}">https://flavorsapi.herokuapp.com/flavors/api/recipes</a> from our website</p>
-    <p>Please help us with maintaining our database by posting your own recipes</p>
-    <br>
+    <div class="egg"></div>
+
     <div class="box">
-        <code><span class='discl'>Disclaimer:</span><br><br>
+        <p><span class='discl'>Disclaimer:</span><br><br>
             1. When posting a recipe on our website, this means you are the sole creator of that recipe.<br>
             2. Once your recipe is inserted onto our database. Flavor will have full copyright over it or them. Meaning, Flavor could publish, distribute, sell, modify, delete, ...<br>   
-        </code>
+        </p>
     </div>
     <br>
     <!--<h2>Recipe</h2>
@@ -41,7 +38,7 @@
     <!--rep_id=recipe['rep_id']), 'recipe' comes from for loop '..recipe in recipes.. for loop below'-->
     {%for recipe in recipes %}
         <a href="{{ url_for('recipe_id', rep_id=recipe['rep_id']) }}">
-            <h2>{{ recipe['title'] }}</h2>
+            <h2 class="">{{ recipe['title'] }}</h2>
         </a>
         <span class="badge badge-primary">{{ recipe['created'] }}</span>
         <hr>

@@ -1,6 +1,6 @@
 #!flask/bin/python
 #from flask_cors import CORS
-from flask import Flask, request, jsonify, abort, make_response, url_for, render_template, flash, redirect
+'''from flask import Flask, request, jsonify, abort, make_response, url_for, render_template, flash, redirect, send_file
 from bs4 import BeautifulSoup
 
 #import sqlite3
@@ -9,12 +9,12 @@ import psycopg2.extras
 import os
 import requests
 import time
-
+import io
 
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your secret key'
+app.config['SECRET_KEY'] = 'your secret key' '''
 
 #CORS(app, resources={r"/*": {"orgins": "*"}})
 
@@ -192,7 +192,7 @@ app.config['SECRET_KEY'] = 'your secret key'
 #def api_add_recipe_list():
 #    recipe = request.get_json()
 #    return jsonify(insert_recipe(recipe))
-try: 
+'''try: 
     #url = 'https://www.recipe-free.com/recipes/easy-swedish-meatballs---jamie-oliver-recipe/129381'
     #url = 'https://www.recipe-free.com/recipes/best-african-vegetarian-stew/129364'
     #url = 'https://www.recipe-free.com/recipes/real-coconut-chicken-tenders-recipe-joel-robuchon-recipe/129450'
@@ -215,69 +215,98 @@ try:
     #print(f'servings: {rservings}')
     #print(f'instructions: {rinstructions}')
 
-    
     page = 1
     url_no = 1
     titles = []
     links = []
     links_dict = {}
-    url_link = 1
-    #code to scrappe all unknown web pagination and get all links
-    while page <= 10:
-        url = f'https://www.recipe-free.com/recipes/page/{page}'
-        result = requests.get(url).text
-        doc = BeautifulSoup(result, 'html.parser')
-        links_list = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('a')
-        for link in links_list:
-            links.append(link.get('href'))
-            links_dict[url_link] = link.get('href')
-            url_link += 1
-        page += 1
-    #print(links_dict)
-    
 
-    #while page != 7:
-        #url = f"https://www.recipe-free.com/categories/meat-recipes/{page}"
-        #print(url)
-        #response = requests.get(url)
-        #html = response.content
-        #soup = BeautifulSoup(html, "lxml")
-        #for a in soup.find('div', {'class': 'category_content centerindent for-this'}).findAll('a', {'class': 'day'}):
-            #titles.append(a.get_text(strip=True))
-            #links.append(a.get('href'))
-            #print(titles)
-        #page = page + 1
-    #for title in titles[:80]:
-        #print(title)
-    #for i, link in enumerate(links[:120], url_no):
-        #print(f'url {url_no}: {link}')
+    while page != 7:
+        url = f"https://www.recipe-free.com/categories/meat-recipes/{page}"
+        # print(url)
+        response = requests.get(url)
+        html = response.content
+        soup = BeautifulSoup(html, "lxml")
+        for a in soup.find('div', {'class': 'category_content centerindent for-this'}).findAll('a', {'class': 'day'}):
+            titles.append(a.get_text(strip=True))
+            links.append(a.get('href'))
+            # print(titles)
+        page = page + 1
+    for title in titles[:80]:
+        print(title)
+    for i, link in enumerate(links[:120], url_no):
+        # print(f'url {url_no}: {link}')
         name = f'url {url_no}'
-        links_dict = {name : link}
-        links_dict = {f'url {url_no}': link}
+        links_dict = {name: link}
+        # links_dict = {f'url {url_no}': link}
         url_no += 1
-        #for dict in links_dict:
-        #print(links_dict)
-        #print(links_dict[name])
-        #code to get info from each link stored in links_dict
+        # for dict in links_dict:
+        # print(links_dict)
+        print(links_dict[name])
+        # code to get info from each link stored in links_dict
         url_grapper = links_dict[name]
-        result = requests.get(url_grapper).text    
+        result = requests.get(url_grapper).text
         doc = BeautifulSoup(result, 'html.parser')
+        # Extract image URL
+        image_tag = doc.find('div', {'class': 'col-md-4 col-sm-4'}).findAll('div')[0].findAll('img')[0]
+        image_url = image_tag['src']
+        image_url_fixed = image_url.replace('../..', '')
+        base_url = 'https://www.recipe-free.com'
+        rimage_url = base_url + image_url_fixed
+        try:
+            rimage = requests.get(rimage_url).content  # Fetch image data
+        except requests.exceptions.RequestException as e:
+            print(f"Error! Failed to fetch image from {rimage_url}: {e}")
+            rimage = None
+        # Extract other details
         rtitle = doc.find('h1', {'class': 'red'}).text.strip()
         ringredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
-        rservings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div', {'class': 'f12 f12'})[1].text.strip()
+        rservings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div', {
+            'class': 'f12 f12'})[1].text.strip()
         rinstructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
-        print(rtitle)
-        print(ringredients)
-        print(rservings)
-        print(rinstructions)
-except:
-    print("Failed to establish a new connection")
+
+        #print(f'title: {rtitle}')
+        #print(f'ingredients: {ringredients}')
+        #print(f'servings: {rservings}')
+        #print(f'instructions: {rinstructions}')
+        print(f'images: {rimage_url}')
+
+
+        try:
+            DATABASE_URL = os.environ['DATABASE_URL']
+            conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        except:
+            conn = psycopg2.connect(
+                host="localhost",
+                database="flavors_api",
+                user=os.environ['DB_USERNAME'],
+                password=os.environ['DB_PASSWORD'])
+
+        try:
+            cur = conn.cursor()'''
+            #query = '''INSERT INTO recipes(title, ingredients, servings, instructions, image) VALUES(%s, %s, %s, %s, %s)'''
+            #record_to_insert = (rtitle, ringredients, rservings, rinstructions, psycopg2.Binary(rimage) if rimage else None)
+            #cur.execute(query, record_to_insert)
+            #conn.commit()
+            #conn.close()
+        #except Exception as e:
+            #print(f"Failed to insert data: {e}")
+
+#except Exception as e:
+    #print(f"Failed to establish a new connection: {e}")
+
+
+#def in_data():
+
+
 
 
 #conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 #Row and column in database tables
-def dict_factory(cursor, row):
+
+
+'''def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
@@ -323,10 +352,12 @@ def get_recipe_id(rep_id):
         abort(404)
     return recipes
 
+
 @app.route('/<int:rep_id>')
 def recipe_id(rep_id):
     recipes = get_recipe_id(rep_id)
     return render_template('recipes.html', recipes=recipes)
+
 
 @app.route('/create', methods=('GET', 'POST'))
 def create():
@@ -645,39 +676,252 @@ def delete_recipe(rep_id):
     db.commit()
     return ('Deleted'), 201
 
+
+@app.route('/recipe_image/<int:id>')
+def recipe_image(id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT image FROM recipes WHERE id = %s", (id,))
+    image_data = cur.fetchone()
+    conn.close()
+
+    if image_data is None or image_data[0] is None:
+        abort(404)
+
+    return send_file(
+        io.BytesIO(image_data[0]),
+        mimetype='image/jpeg',  # or the appropriate mime type
+        as_attachment=False,
+        download_name='recipe_image.jpg'  # or a meaningful name
+    )'''
+
+from flask import Flask, request, jsonify, render_template, flash, redirect, url_for, abort
+from bs4 import BeautifulSoup
+import psycopg2
+import psycopg2.extras
+import requests
+import os
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your_secret_key'
+
+def get_db_connection():
+    try:
+        DATABASE_URL = os.environ['DATABASE_URL']
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    except:
+        conn = psycopg2.connect(
+            host="localhost",
+            database="flavors_api",
+            user=os.environ['DB_USERNAME'],
+            password=os.environ['DB_PASSWORD'])
+    return conn
+
+def fetch_recipe_data(url):
+    response = requests.get(url)
+    doc = BeautifulSoup(response.text, 'html.parser')
+    try:
+        image_tag = doc.find('div', {'class': 'col-md-4 col-sm-4'}).find('img')
+        image_url = image_tag['src'].replace('../..', '')
+        base_url = 'https://www.recipe-free.com'
+        rimage_url = base_url + image_url
+        rimage = requests.get(rimage_url).content
+    except Exception as e:
+        print(f"Error fetching image: {e}")
+        rimage = None
+        rimage_url = None
+
+    rtitle = doc.find('h1', {'class': 'red'}).text.strip()
+    ringredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
+    rservings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div', {'class': 'f12 f12'})[1].text.strip()
+    rinstructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
+
+    return {
+        "title": rtitle,
+        "ingredients": ringredients,
+        "servings": rservings,
+        "instructions": rinstructions,
+        "image_url": rimage_url,
+        "image": rimage
+    }
+
+def insert_recipe(recipe):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        query = '''INSERT INTO recipes(title, ingredients, servings, instructions, image) VALUES(%s, %s, %s, %s, %s)'''
+        cur.execute(query, (recipe['title'], recipe['ingredients'], recipe['servings'], recipe['instructions'], psycopg2.Binary(recipe['image']) if recipe['image'] else None))
+        conn.commit()
+        cur.close()
+        conn.close()
+    except Exception as e:
+        print(f"Failed to insert data: {e}")
+        conn.rollback()
+        cur.close()
+        conn.close()
+
+@app.route('/')
+def home():
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute('SELECT * FROM recipes')
+    recipes = cur.fetchall()
+    cur.close()
+    conn.close()
+    return render_template('index.html', recipes=recipes)
+
+@app.route('/<int:rep_id>')
+def recipe_id(rep_id):
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute('SELECT * FROM recipes WHERE rep_id = %s', (rep_id,))
+    recipe = cur.fetchone()
+    cur.close()
+    conn.close()
+    if recipe is None:
+        abort(404)
+    return render_template('recipes.html', recipe=recipe)
+
+@app.route('/create', methods=('GET', 'POST'))
+def create():
+    if request.method == 'POST':
+        title = request.form['title']
+        ingredients = request.form['ingredients']
+        servings = request.form['servings']
+        instructions = request.form['instructions']
+
+        if not title:
+            flash('Title is required!')
+        elif not ingredients:
+            flash('Ingredients are required!')
+        elif not servings:
+            flash('Servings are required!')
+        elif not instructions:
+            flash('Instructions are required!')
+        else:
+            conn = get_db_connection()
+            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            cur.execute('INSERT INTO recipes (title, ingredients, servings, instructions) VALUES (%s, %s, %s, %s)',
+                        (title, ingredients, servings, instructions))
+            conn.commit()
+            cur.close()
+            conn.close()
+            return redirect(url_for('home'))
+
+    return render_template('create.html')
+
+@app.route('/flavors/api/recipes', methods=['GET'])
+def api_all():
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute('SELECT * FROM recipes')
+    all_recipes = cur.fetchall()
+    cur.close()
+    conn.close()
+    return jsonify({'recipes': all_recipes})
+
+@app.route('/flavors/api/recipes', methods=['GET'])
+def api_filter():
+    query_params = request.args
+
+    rep_id = query_params.get('rep_id')
+    title = query_params.get('title')
+    ingredients = query_params.get('ingredients')
+    servings = query_params.get('servings')
+    instructions = query_params.get('instructions')
+    image = query_params.get('image')
+
+    query = "SELECT * FROM recipes WHERE"
+    to_filter = []
+
+    if rep_id:
+        query += ' rep_id=%s AND'
+        to_filter.append(rep_id)
+    if title:
+        query += ' title=%s AND'
+        to_filter.append(title)
+    if ingredients:
+        query += ' ingredients=%s AND'
+        to_filter.append(ingredients)
+    if servings:
+        query += ' servings=%s AND'
+        to_filter.append(servings)
+    if instructions:
+        query += ' instructions=%s AND'
+        to_filter.append(instructions)
+    if image:
+        query += ' image=%s AND'
+        to_filter.append(image)
+    if not (rep_id or title or ingredients or servings or instructions or image):
+        return page_not_found(404)
+
+    query = query[:-4] + ';'
+
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute(query, to_filter)
+    results = cur.fetchall()
+    cur.close()
+    conn.close()
+    return jsonify(results)
+
+@app.route('/flavors/api/recipes', methods=['POST'])
+def api_post():
+    recipes = request.get_json()
+
+    title = recipes['title']
+    ingredients = recipes.get('ingredients', "")
+    servings = recipes.get('servings', "")
+    instructions = recipes.get('instructions', "")
+
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute('INSERT INTO recipes (title, ingredients, servings, instructions) VALUES (%s, %s, %s, %s)',
+                (title, ingredients, servings, instructions))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return jsonify({'recipe': recipes}), 201
+
+@app.route('/flavors/api/recipes/<rep_name>', methods=['GET'])
+def get_recipes(rep_name):
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute("SELECT * FROM recipes;")
+    recipes = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    filtered_recipes = [recipe for recipe in recipes if rep_name.casefold() in recipe['title'].casefold() or rep_name.casefold() in recipe['ingredients'].casefold()]
+    if not filtered_recipes:
+        abort(404)
+    return jsonify(filtered_recipes)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return "<h1>404!</h1><p>Resource not found.</p>", 404
+
+@app.route('/image/<int:id>')
+def image(id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('SELECT image FROM recipes WHERE rep_id = %s', (id,))
+    image_data = cur.fetchone()[0]
+    cur.close()
+    conn.close()
+    if not image_data:
+        abort(404)
+    return app.response_class(image_data, mimetype='image/jpeg')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+
 # Posted user recipe(s)
 #@app.route('/flavors/api/recipes', methods=['GET', 'POST'])
 #def api_recipe_request():    
-try:
-    DATABASE_URL = os.environ['DATABASE_URL']
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-except:
-    conn = psycopg2.connect(
-        host="localhost", 
-        database="flavors_api",
-        user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'])
-   
-    '''try: 
 
-        cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = %s", [rep_id])
-        cur.execute("SELECT * FROM recipes;")
-        recipes = cur.fetchall()
-        rrep_id = recipes['rep_id'] + 1, 
-        conn = sqlite3.connect('flavor_api_database.db')'''
-try:
-    cur = conn.cursor()
-        #conn.execute('INSERT INTO recipes(id, title, ingredients, servings, instructions) VALUES(?, ?, ?, ?, ?)', (id, title, ingredients, servings, instructions))
-    query = '''INSERT INTO recipes(title, ingredients, servings, instructions) VALUES(%s, %s, %s, %s)'''
-    record_to_insert = (rtitle, ringredients, rservings, rinstructions)
-    cur.execute(query, record_to_insert)
-    conn.commit()
-        
-    ##except:
-    ##    print("Couldn't fetch recipes. Make sure you're have internet connection.")
-    conn.close()
-except:
-    print("No data collected, Please connect to the internet.")
 #from flask_httpauth import HTTPBasicAuth
 
 #auth = HTTPBasicAuth()   
