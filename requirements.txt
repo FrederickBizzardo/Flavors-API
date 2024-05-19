@@ -48,7 +48,6 @@ PyJWT==2.3.0
 pyOpenSSL==21.0.0
 pyparsing==3.0.9
 pyrsistent==0.18.1
-python-apt==2.4.0+ubuntu3
 pytz==2022.1
 PyYAML==5.4.1
 requests==2.28.1
