@@ -1,2 +1,8 @@
 # dotenv
 .env
+
+myenv/
+
+venv/
+
+__pycache__/
