@@ -913,8 +913,8 @@ def image(id):
         abort(404)
     return app.response_class(image_data, mimetype='image/jpeg')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+#if __name__ == '__main__':
+#    app.run(debug=True)
 
 
 
