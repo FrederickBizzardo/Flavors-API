@@ -3,11 +3,11 @@
 <!--<link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">-->
 
 {% block content %}
-    <h1>{% block title %} Flavors API {% endblock %}</h1>
-    <div class="egg"></div>
+    <div class="container">
+    <h1 class="title">{% block title %} Flavors {% endblock %}</h1>
 
     <div class="box">
-        <p><span class='discl'>Disclaimer:</span><br><br>
+        <p><span class='discl'>Disclaimers:</span><br><br>
             1. When posting a recipe on our website, this means you are the sole creator of that recipe.<br>
             2. Once your recipe is inserted onto our database. Flavor will have full copyright over it or them. Meaning, Flavor could publish, distribute, sell, modify, delete, ...<br>   
         </p>
@@ -36,6 +36,7 @@
         </div>
     </form> -->
     <!--rep_id=recipe['rep_id']), 'recipe' comes from for loop '..recipe in recipes.. for loop below'-->
+
     {%for recipe in recipes %}
         <a href="{{ url_for('recipe_id', rep_id=recipe['rep_id']) }}">
             <h2 class="">{{ recipe['title'] }}</h2>
@@ -43,4 +44,5 @@
         <span class="badge badge-primary">{{ recipe['created'] }}</span>
         <hr>
     {% endfor %}
+    </div>
 {% endblock %}

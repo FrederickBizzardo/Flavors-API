@@ -17,10 +17,23 @@
     src: url("/static/fonts/Onest-Black.ttf");
 }
 
+@font-face {
+    font-family: 'lobster-regular';
+    src: url("/static/fonts/Lobster-Regular.ttf");
+}
+
 html, body {
     max-width: 100%;
     overflow-x: hidden;
     font-family: 'onest-regular', sans-serif;
+}
+
+/*body {
+    background-image: url("/static/images/egg.png");
+}*/
+
+.title {
+    font-family: 'lobster-regular', sans-serif;
 }
 
 h1, h2 {
@@ -143,6 +156,8 @@ label {
 
 .egg {
     background-image: url("/static/images/egg.png");
+    background-repeat: no-repeat;
+    background-position: left top;
 
 }
 
