@@ -1,0 +1,15 @@
+ {
+  "builds": [
+    {
+      "src": "api/flavorsapi.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api/flavorsapi.py"
+    }
+  ],
+  "buildCommand": "apt-get update && apt-get install -y libxml2-dev libxslt1-dev && pip install -r requirements.txt"
+}
