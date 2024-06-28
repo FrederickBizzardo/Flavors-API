@@ -1,0 +1,171 @@
+@font-face {
+    font-family: 'gotham-black';
+    src: url("/static/fonts/Gotham-Black.otf");
+}
+@font-face {
+    font-family: 'gotham-medium';
+    src: url("/static/fonts/GothamMedium.ttf");
+}
+
+@font-face {
+    font-family: 'onest-regular';
+    src: url("/static/fonts/Onest-Regular.ttf");
+}
+
+@font-face {
+    font-family: 'onest-black';
+    src: url("/static/fonts/Onest-Black.ttf");
+}
+
+@font-face {
+    font-family: 'lobster-regular';
+    src: url("/static/fonts/Lobster-Regular.ttf");
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    font-family: 'onest-regular', sans-serif;
+}
+
+/*body {
+    background-image: url("/static/images/egg.png");
+}*/
+
+.title {
+    font-family: 'lobster-regular', sans-serif;
+}
+
+h1, h2 {
+    font-family: 'onest-black', sans-serif;
+    }
+p {
+    font-family: 'onest-regular', sans-serif;
+}
+input {
+    text-align: center;
+    /*font-family: monospace;*/
+    font-size: 15px;
+    border: 3px solid black;
+    width: 350px;
+    height: 30px;
+}
+textarea {
+    text-align: center;
+    /*font-family: monospace;*/
+    font-size: 15px;
+    border: 3px solid black;
+    width: 350px;
+    height: 30px;
+}
+
+.textarea {
+    resize: vertical;
+    
+}
+textarea:focus {
+    border: 3px solid #ff4141;
+    transition: .5s ease-in;
+}
+
+.discl {
+    font-family: 'onest-regular', 'sans-serif';
+    font-weight: bold;
+}
+code {
+    padding: 20px 20px 0 20px;
+}
+/*.box {
+    width: 100%;
+    height: 30%;
+    border: 3px solid black;      
+}*/
+
+.instruct_btn {
+    font-family: 'onest-regular', sans-serif;
+    height: 30px;
+    width: 60px;
+    color: black;
+    background-color: white;
+    border: 3px solid black;
+    text-align: center;
+    display: inline-block;
+    
+}
+
+.instruct_btn:hover {
+    color: white;
+    background-color: black;
+}
+
+.rep_post {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex: 3;
+    margin-bottom: 60px;
+}
+
+label {
+    font-family: 'onest-black', sans-serif;
+    font-size: 25px;
+    padding: 30px 0 5px 0;
+}
+
+.ingredients {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex: 3;
+    /*justify-content: left;*/
+}
+
+.ingred_ipt {
+    margin-right: 20px;
+}
+
+.instructions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex: 3;
+    /*justify-content: left;*/
+}
+
+.instruct_ipt {
+    margin-right: 20px;
+}
+
+.ingred_btn {
+    font-family: 'gotham-black', sans-serif;
+    height: 30px;
+    width: 60px;
+    color: black;
+    background-color: white;
+    border: 3px solid black;
+    text-align: center;
+    display: inline-block;
+    overflow-y: hidden;
+    overflow: hidden;
+}
+
+.ingred_btn:hover {
+    color: white;
+    background-color: black;
+}
+
+.egg {
+    background-image: url("/static/images/egg.png");
+    background-repeat: no-repeat;
+    background-position: 50% 100%;
+
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.gap {
+    height: 300vh;
+}
