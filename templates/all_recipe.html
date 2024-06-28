@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipes</title>
+</head>
+<body>
+    {% extends 'base.html' %}
+<!--<link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">-->
+
+{% block content %}
+    <div class="container">
+    <h1 class="title">{% block title %} Flavors {% endblock %}</h1>
+
+    <div class="box">
+        <p><span class='discl'>Disclaimers:</span><br><br>
+            1. When posting a recipe on our website, this means you are the sole creator of that recipe.<br>
+            2. Once your recipe is inserted onto our database. Flavor will have full copyright over it or them. Meaning, Flavor could publish, distribute, sell, modify, delete, ...<br>
+        </p>
+    </div>
+    <br>
+    <!--<h2>Recipe</h2>
+
+    <form class="rep_post">
+        <label for="title">Title</label>
+        <input placeholder="Type"/>
+
+        <label for="ingredients">Ingredients</label>
+        <div class="ingredients">
+            <input class="ingred_ipt" placeholder="Type"/>
+            <botton class="ingred_btn" type="submit">Add</botton>
+        </div>
+
+        <label for="servings">Servings</label>
+        <input placeholder="Type"/>
+
+        <label for="instructions">Instructions</label>
+        <div class="instructions">
+
+            <textarea class="instruct_ipt textarea" placeholder="Type"></textarea>
+            <botton class="instruct_btn" type="submit">Add</botton>
+        </div>
+    </form> -->
+    <!--rep_id=recipe['rep_id']), 'recipe' comes from for loop '..recipe in recipes.. for loop below'-->
+
+    {%for recipe in recipes %}
+        <a href="{{ url_for('recipe_id', rep_id=recipe['rep_id']) }}">
+            <h2 class="">{{ recipe['title'] }}</h2>
+        </a>
+        <span class="badge badge-primary">{{ recipe['created'] }}</span>
+        <hr>
+    {% endfor %}
+    </div>
+{% endblock %}
+</body>
+</html>
