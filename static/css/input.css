@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: 'onest-regular';
+    src: url("/static/fonts/Onest-Regular.ttf");
+}
+
+@font-face {
+    font-family: 'onest-black';
+    src: url("/static/fonts/Onest-Black.ttf");
+}

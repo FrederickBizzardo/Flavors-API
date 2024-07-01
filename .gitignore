@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # dotenv
 .env
 
@@ -7,6 +7,6 @@ myenv/
 venv/
 
 __pycache__/
-=======
+
 .venv/
 

@@ -1,63 +1,81 @@
+<title>Create Recipe</title>
+{% extends 'base.html' %}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Add icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="{{ url_for('static', filename= 'css/create.css') }}">
-{% extends 'base.html' %}
+
 
 {% block content %}
-<h1 class="title">{% block title %} Create a New Recipe {% endblock %}</h1>
-<form method="POST">
-    <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" name="title"
-               placeholder="Recipe Title" class="form-control"
+    <div class="pt-32 px-8">
+    <h1 class="text-6xl pb-20">Create a New Recipe</h1>
+
+
+        <div class="form-group">
+            <label for="title">Title</label><br/>
+            <input type="text" name="title"
+               placeholder="Recipe Title" class="bg-[#f3f3f3] form-control"
                value="{{ request.form['title'] }}"></input>
-    </div>
+        </div>
+
+
 
     
 
     <div class="form-group">
         
-        <label for="ingredients">Ingredients</label>
+        <label for="ingredients">Ingredients</label><br/>
         <textarea name="ingredients" placeholder="Ingredients"
-                  class="form-control">{{ request.form['ingredients'] }}</textarea>
-        <div class="add">
+                  class="form-control bg-[#f3f3f3]">{{ request.form['ingredients'] }}</textarea>
+    </div>
+        <!--<div class="add">
             <button class="second_btn" name='ingredients'>Add</button>
         </div>
-        
+
     </div>
     <div class="delete">
         <button class="second_btn"><a> {{ ingredients }}</a><i class="fa fa-close"></i> </button>
-    </div>
+    </div>-->
 
     <div class="form-group">
-        <label for="servings">Servings</label>
+        <label for="servings">Servings</label><br/>
         <input type="text" name="servings"
-               placeholder="Servings" class="form-control"
+               placeholder="Servings" class="form-control bg-[#f3f3f3]"
                value="{{ request.form['servings'] }}"></input>
     </div>
 
+        <div>
+            <label for="category">Category</label><br/>
+            <p>Select between one of these categories:<br/>
+            <span class="font-bold">Meat, Dessert, add[more:fred]</span></p>
+            <input type="text" name="category"
+               placeholder="Category" class="form-control bg-[#f3f3f3]"
+               value="{{ request.form['recipe_category'] }}">
+        </div>
+
     <div class="form-group">
-        <label for="instructions">Instructions</label>
+        <label for="instructions">Instructions</label><br/>
         <textarea name="instructions" placeholder="Instructions"
-                  class="form-control">{{ request.form['instructions'] }}</textarea>
-        <div class="add_instruct">
+                  class="form-control bg-[#f3f3f3] h-auto">{{ request.form['instructions'] }}</textarea>
+        <!--<div class="add_instruct">
             <button class="second_btn" name='instructions'>Add</button>
         </div>
     </div>
     <div class="instruct_delete">
         <button class="third_btn"><a> {{ instructions }}</a><i class="fa fa-close"></i> </button>
-    </div>
+    </div>-->
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="pt-6  text-white">
+        <button type="submit" class="submit w-[20%] h-[5%] bg-black text-white">Submit</button>
+    </div>
     </div>
 </form>
 
 <div class="box">
-    <code><span class='discl'>Disclaimer:</span><br><br>
-        1. When posting a recipe on our website, this means you are the sole creator of that recipe.<br>
-        2. Once your recipe is inserted onto our database. Flavor will have full copyright over it or them. Meaning, Flavor could publish, distribute, sell, modify, delete, ...<br>   
-    </code>
+    <span class='discl'>Disclaimer:</span><br><br>
+    <p>
+        Please do read our terms & conditions before create a recipe!
+    </p>
 </div>
+    </div>
 {% endblock %}

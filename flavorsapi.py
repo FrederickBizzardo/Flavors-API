@@ -718,6 +718,9 @@ app.config['SECRET_KEY'] = 'your_secret_key'
 
 '''def fetch_recipe_data(url):'''
 
+app.config['DEBUG'] = os.getenv('FLASK_DEBUG', '0') == '1'
+app.config['ENV'] = os.getenv('FLASK_ENV', 'production')
+
 try:
     page = 1
     url_no = 1
@@ -756,6 +759,8 @@ try:
         image_url = image_tag['src']
         image_url_fixed = image_url.replace('../..', '')
         base_url = 'https://www.recipe-free.com'
+        recipe_handle ='recipe-free'
+        original_recipe = 'No'
         rimage_url = base_url + image_url_fixed
         try:
             rimage = requests.get(rimage_url).content  # Fetch image data
@@ -788,9 +793,15 @@ try:
         try:
             cur = conn.cursor()
             query = '''INSERT INTO recipes(title, ingredients, servings, instructions, image) VALUES(%s, %s, %s, %s, %s)'''
+            user_query = '''INSERT INTO user_recipes(user_handle, recipe_owner, original_recipe) VALUES(%s, %s, %s)'''
             record_to_insert = (
             rtitle, ringredients, rservings, rinstructions, psycopg2.Binary(rimage) if rimage else None)
+
+            '''user_recipe_to_insert = (
+                recipe_handle, recipe_handle, original_recipe)'''
+
             cur.execute(query, record_to_insert)
+            '''cur.execute(user_query, user_recipe_to_insert)'''
             conn.commit()
             conn.close()
         except Exception as e:
@@ -820,9 +831,68 @@ def home():
 
     return render_template('index.html', recipes=recipes)
 
+@app.route('/login', methods=['GET'])
+def login():
+    try:
+        DATABASE_URL = os.environ['DATABASE_URL']
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    except:
+        conn = psycopg2.connect(
+            host="localhost",
+            database="flavors_api",
+            user=os.environ['DB_USERNAME'],
+            password=os.environ['DB_PASSWORD'])
+
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    # all_recipes = cur.execute('SELECT * FROM recipes;').fetchall()
+    cur.execute('SELECT * FROM users;')
+    recipes = cur.fetchall()
+
+    return render_template('login.html', recipes=recipes)
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        name_user = request.form['user_firstname']
+        email = request.form['email']
+        username = request.form['user_handle']
+        password = request.form['user_password']
+        confirm_pass = request.form['user_password']
+
+        if not name_user:
+            flash('Your name is required!')
+        if not email:
+            flash('Your email is required!')
+        if not username:
+            flash('Your username is required!')
+        if not password:
+            flash('A password is required!')
+        if confirm_pass not in password:
+            flash('The password does not match!')
+
+        else:
+            try:
+                DATABASE_URL = os.environ['DATABASE_URL']
+                conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+            except:
+                conn = psycopg2.connect(
+                    host="localhost",
+                    database="flavors_api",
+                    user=os.environ['DB_USERNAME'],
+                    password=os.environ['DB_PASSWORD'])
+            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            cur.execute('INSERT INTO users (user_handle, user_password, user_firstname, email) VALUES (%s, %s, %s, %s)',
+                        (username, password, name_user, email))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('home'))
+
+    return render_template('register.html')
+
 
 # Home screen
-@app.route('/recipes', methods=['GET'])
+@app.route('/recipes/category', methods=['GET'])
 def all_recipes():
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
@@ -840,6 +910,26 @@ def all_recipes():
     recipes = cur.fetchall()
 
     return render_template('all_recipe.html', recipes=recipes)
+
+@app.route('/recipes/category/meat', methods=['GET']) #Change 'meat' to dynamic research on internet
+def category_recipes():
+    try:
+        DATABASE_URL = os.environ['DATABASE_URL']
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    except:
+        conn = psycopg2.connect(
+            host="localhost",
+            database="flavors_api",
+            user=os.environ['DB_USERNAME'],
+            password=os.environ['DB_PASSWORD'])
+
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    # all_recipes = cur.execute('SELECT * FROM recipes;').fetchall()
+    cur.execute('SELECT * FROM recipes;')
+    recipes = cur.fetchall()
+
+    return render_template('category_recipe.html', recipes=recipes)
+
 
 
 def get_recipe_id(rep_id):

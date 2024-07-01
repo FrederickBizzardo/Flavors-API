@@ -28,12 +28,17 @@ html, body {
     font-family: 'onest-regular', sans-serif;
 }
 
+body {
+    background-color: #f3f3f3;
+}
+
 /*body {
     background-image: url("/static/images/egg.png");
 }*/
 
 .title {
     font-family: 'lobster-regular', sans-serif;
+    color: crimson;
 }
 
 h1, h2 {
@@ -137,7 +142,7 @@ label {
 }
 
 .ingred_btn {
-    font-family: 'gotham-black', sans-serif;
+    font-family: 'onest-black', sans-serif;
     height: 30px;
     width: 60px;
     color: black;
@@ -158,7 +163,7 @@ label {
     background-image: url("/static/images/egg.png");
     background-repeat: no-repeat;
     background-position: 50% 100%;
-
+    position: relative;
 }
 
 a {
@@ -168,4 +173,29 @@ a {
 
 .gap {
     height: 300vh;
+}
+
+.nav {
+    font-family: "onest-regular", sans-serif;
+    color: black;
+    background: transparent;
+    z-index: 10; /* Ensure the navbar is above other elements */
+}
+
+li a {
+    text-decoration: none;
+    color: black;
+}
+
+.homely {
+    font-family: onest-black, sans-serif;
+}
+
+.special {
+    font-family: 'lobster-regular', sans-serif;
+    color: crimson;
+}
+
+.submit {
+    font-family: onest-black, sans-serif;
 }

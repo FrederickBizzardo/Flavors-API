@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log In</title>
+</head>
+<body>
+{% extends 'base.html' %}
+{% block content %}
+    <div class="pt-32 px-8">
+    <form method="POST">
+        <section class="flex justify-center items-center flex-col">
+            <h1 class="font-OnestB text-center text-6xl pb-10">Log In</h1>
+            <p class="font-OnestB">Username</p>
+            <input type="text" name="username"
+               placeholder="" class=" border-[2px] bg-[#f3f3f3] mb-5"
+               value="{{ request.form['username'] }}">
+            <p class="font-OnestB">Password</p>
+            <input type="text" name="username"
+               placeholder="" class=" border-[2px] bg-[#f3f3f3] mb-5"
+               value="{{ request.form['password'] }}">
+            <button type="submit" class="submit w-[350px] h-[30px] bg-black text-white">Log In</button>
+            <a href="{{url_for('signup')}}"><p class="font-OnestR font-bold pt-10">Don't have an account</p></a>
+        </section>
+    </form>
+    </div>
+{% endblock %}
+</body>
+</html>
