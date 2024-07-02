@@ -854,23 +854,22 @@ def login():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        name_user = request.form['user_firstname']
-        email = request.form['email']
-        username = request.form['user_handle']
-        password = request.form['user_password']
-        confirm_pass = request.form['user_password']
+        name_user = request.form.get('user_firstname')
+        email = request.form.get('email')
+        username = request.form.get('user_handle')
+        password = request.form.get('user_password')
+        confirm_pass = request.form.get('confirm_password')
 
         if not name_user:
             flash('Your name is required!')
-        if not email:
+        elif not email:
             flash('Your email is required!')
-        if not username:
+        elif not username:
             flash('Your username is required!')
-        if not password:
+        elif not password:
             flash('A password is required!')
-        if confirm_pass not in password:
-            flash('The password does not match!')
-
+        elif password != confirm_pass:
+            flash('The passwords do not match!')
         else:
             try:
                 DATABASE_URL = os.environ['DATABASE_URL']
@@ -889,7 +888,6 @@ def signup():
             return redirect(url_for('home'))
 
     return render_template('register.html')
-
 
 # Home screen
 @app.route('/recipes/category', methods=['GET'])

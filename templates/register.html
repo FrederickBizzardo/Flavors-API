@@ -12,37 +12,36 @@
         <section class="flex justify-center items-center flex-col">
             <h1 class="font-OnestB text-center text-6xl pb-10">Sign Up</h1>
             <p class="font-OnestB">First Name</p>
-            <input type="text" name="firstname"
-               placeholder="" class=" border-[2px] bg-[#f3f3f3] mb-5"
-               value="{{ request.form['username'] }}">
+            <input type="text" name="user_firstname"
+               placeholder="" class="border-[2px] bg-[#f3f3f3] mb-5"
+               value="{{ request.form.get('user_firstname', '') }}">
 
-            <p class="font-OnestB">Surname</p>
+            <!--<p class="font-OnestB">Surname</p>
             <input type="text" name="surname"
                placeholder="" class=" border-[2px] bg-[#f3f3f3] mb-5"
-               value="{{ request.form['password'] }}">
+               value="{{ request.form.get('surname', '') }}">-->
 
             <p class="font-OnestB">Email</p>
-            <input type="text" name="surname"
-               placeholder="" class=" border-[2px] bg-[#f3f3f3] mb-5"
-               value="{{ request.form['password'] }}">
+            <input type="text" name="email"
+               placeholder="" class="border-[2px] bg-[#f3f3f3] mb-5"
+               value="{{ request.form.get('email', '') }}">
 
             <p class="font-OnestB">Username</p>
-            <input type="text" name="username"
-               placeholder="" class=" border-[2px] bg-[#f3f3f3] mb-5"
-               value="{{ request.form['username'] }}">
+            <input type="text" name="user_handle"
+               placeholder="" class="border-[2px] bg-[#f3f3f3] mb-5"
+               value="{{ request.form.get('user_handle', '') }}">
 
             <p class="font-OnestB">Password</p>
-            <input type="text" name="username"
-               placeholder="" class=" border-[2px] bg-[#f3f3f3] mb-5"
-               value="{{ request.form['password'] }}">
+            <input type="password" name="user_password"
+               placeholder="" class="border-[2px] bg-[#f3f3f3] mb-5"
+               value="">
 
             <p class="font-OnestB">Confirm Password</p>
-            <input type="text" name="username"
-               placeholder="" class=" border-[2px] bg-[#f3f3f3] mb-5"
-               value="{{ request.form['password'] }}">
+            <input type="password" name="confirm_password"
+               placeholder="" class="border-[2px] bg-[#f3f3f3] mb-5"
+               value="">
 
             <button type="submit" class="submit w-[350px] h-[30px] bg-black text-white">Sign Up</button>
-
         </section>
     </form>
     </div>
