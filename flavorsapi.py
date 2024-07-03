@@ -831,8 +831,9 @@ def home():
 
     return render_template('index.html', recipes=recipes)
 
-@app.route('/login', methods=['GET'])
-def login():
+
+@app.route('/terms', methods=['GET'])
+def terms():
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -848,7 +849,52 @@ def login():
     cur.execute('SELECT * FROM users;')
     recipes = cur.fetchall()
 
-    return render_template('login.html', recipes=recipes)
+    return render_template('terms.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        if not username:
+            flash('Your username is required!')
+        elif not password:
+            flash('Your password is required!')
+        else:
+            try:
+                DATABASE_URL = os.environ['DATABASE_URL']
+                conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+            except:
+                conn = psycopg2.connect(
+                    host="localhost",
+                    database="flavors_api",
+                    user=os.environ['DB_USERNAME'],
+                    password=os.environ['DB_PASSWORD'])
+            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            cur.execute('SELECT * FROM users WHERE user_handle = %s AND user_password = %s', (username, password))
+            user = cur.fetchone()
+            conn.close()
+
+            if user:
+                session['user_id'] = user['user_id']
+                session['username'] = user['user_handle']
+                session['email'] = user['email']
+                return redirect(url_for('dashboard'))
+            else:
+                flash('Invalid username or password!')
+
+    return render_template('login.html')
+
+@app.route('/dashboard')
+def dashboard():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    return render_template('dashboard.html', username=session['username'], email=session['email'])
+
+
 
 
 @app.route('/signup', methods=['GET', 'POST'])

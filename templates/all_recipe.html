@@ -7,6 +7,7 @@
 <body>
 {% extends 'base.html' %}
 {% block content %}
+    <div class="bg-[#f3f3f3]">
     <div class="pt-32 px-8">
         <div>
             <h1 class="text-6xl">Recipes by Category</h1>
@@ -14,6 +15,7 @@
         <section class="pt-6">
             <p class="font-black"><a href="{{url_for('category_recipes')}}">Meat Recipes</a></p> <!-- Use dynamic just like all recipes from the meat category-->
         </section>
+    </div>
     </div>
 {% endblock %}
 </body>

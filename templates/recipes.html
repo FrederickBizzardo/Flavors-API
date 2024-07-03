@@ -6,6 +6,7 @@
     <div class="pt-32 px-8">
     <h2>{% block title %} {{ recipe['title'] }} {% endblock %}</h2>
     <img src="{{ url_for('image', id=recipe['rep_id']) }}" alt="{{ recipe['title'] }}" class="img-fluid">
+    <span class="text-white bg-red-600 w-auto h-[2%]">Servings: {{ recipe['servings'] }}</span><br/>
     <span class="text-white bg-black w-auto h-[2%]">{{ recipe['ingredients'] }}</span>
     <p>{{ recipe['instructions'] }}</p>
     </div>
