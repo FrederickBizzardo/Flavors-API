@@ -13,7 +13,11 @@
             <h1 class="text-6xl">Recipes by Category</h1>
         </div>
         <section class="pt-6">
-            <p class="font-black"><a href="{{url_for('category_recipes')}}">Meat Recipes</a></p> <!-- Use dynamic just like all recipes from the meat category-->
+            <ul>
+             {% for category in categories %}
+                 <h1><a href="{{ url_for('category_recipe', category=category) }}">{{ category }}</a></h1>
+             {% endfor %}
+            </ul>
         </section>
     </div>
     </div>

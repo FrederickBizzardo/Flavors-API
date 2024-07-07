@@ -30,6 +30,8 @@ html, body {
 
 body {
     background-color: #f3f3f3;
+    user-select: none;
+    /*overflow: hidden;*/
 }
 
 /*body {

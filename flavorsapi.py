@@ -693,13 +693,14 @@ def recipe_image(id):
         download_name='recipe_image.jpg'  # or a meaningful name
     )'''
 
-from flask import Flask, request, jsonify, render_template, flash, redirect, url_for, abort
+from flask import Flask, request, jsonify, render_template, flash, redirect, url_for, abort, session
 from bs4 import BeautifulSoup
 import psycopg2
 import psycopg2.extras
 import requests
 import os
 import base64
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -721,95 +722,110 @@ app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['DEBUG'] = os.getenv('FLASK_DEBUG', '0') == '1'
 app.config['ENV'] = os.getenv('FLASK_ENV', 'production')
 
+
+categories = [
+    "meat", "desserts", "fish", "vegetables", "rice", "appetizers", "pasta",
+    "pizza-and-pie", "egg-and-omelette", "seafood", "salad", "bakery-and-bread",
+    "sandwich", "soup", "sauce", "drink-and-cocktail", "ideas-for-dinner"
+]
+
+base_url = "https://www.recipe-free.com"
+
 try:
-    page = 1
-    url_no = 1
-    titles = []
-    links = []
-    links_dict = {}
+    for category in categories:
+        page = 1
+        titles = []
+        links = []
+        links_dict = {}
+        url_no = 1
 
-    while page != 7:
-        url = f"https://www.recipe-free.com/categories/meat-recipes/{page}"
-        # print(url)
-        response = requests.get(url)
-        html = response.content
-        soup = BeautifulSoup(html, "lxml")
-        for a in soup.find('div', {'class': 'category_content centerindent for-this'}).findAll('a', {'class': 'day'}):
-            titles.append(a.get_text(strip=True))
-            links.append(a.get('href'))
-            # print(titles)
-        page = page + 1
-    for title in titles[:80]:
-        print(title)
-    for i, link in enumerate(links[:120], url_no):
-        # print(f'url {url_no}: {link}')
-        name = f'url {url_no}'
-        links_dict = {name: link}
-        # links_dict = {f'url {url_no}': link}
-        url_no += 1
-        # for dict in links_dict:
-        # print(links_dict)
-        print(links_dict[name])
-        # code to get info from each link stored in links_dict
-        url_grapper = links_dict[name]
-        result = requests.get(url_grapper).text
-        doc = BeautifulSoup(result, 'html.parser')
-        # Extract image URL
-        image_tag = doc.find('div', {'class': 'col-md-4 col-sm-4'}).findAll('div')[0].findAll('img')[0]
-        image_url = image_tag['src']
-        image_url_fixed = image_url.replace('../..', '')
-        base_url = 'https://www.recipe-free.com'
-        recipe_handle ='recipe-free'
-        original_recipe = 'No'
-        rimage_url = base_url + image_url_fixed
-        try:
-            rimage = requests.get(rimage_url).content  # Fetch image data
-        except requests.exceptions.RequestException as e:
-            print(f"Error! Failed to fetch image from {rimage_url}: {e}")
-            rimage = None
-        # Extract other details
-        rtitle = doc.find('h1', {'class': 'red'}).text.strip()
-        ringredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
-        rservings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div', {
-            'class': 'f12 f12'})[1].text.strip()
-        rinstructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
+        while page != 7:
+            url = f"{base_url}/categories/{category}-recipes/{page}"
+            response = requests.get(url)
+            html = response.content
+            soup = BeautifulSoup(html, "html.parser")
+            category_content = soup.find('div', {'class': 'category_content centerindent for-this'})
+            if category_content:
+                for a in category_content.findAll('a', {'class': 'day'}):
+                    titles.append(a.get_text(strip=True))
+                    links.append(a.get('href'))
+            else:
+                print(f"No category content found for {category} on page {page}")
+            page += 1
 
-        # print(f'title: {rtitle}')
-        # print(f'ingredients: {ringredients}')
-        # print(f'servings: {rservings}')
-        # print(f'instructions: {rinstructions}')
-        print(f'images: {rimage_url}')
+        for i, link in enumerate(links[:120], url_no):
+            name = f'url {url_no}'
+            links_dict[name] = link
+            url_no += 1
 
-        try:
-            DATABASE_URL = os.environ['DATABASE_URL']
-            conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-        except:
-            conn = psycopg2.connect(
-                host="localhost",
-                database="flavors_api",
-                user=os.environ['DB_USERNAME'],
-                password=os.environ['DB_PASSWORD'])
+            url_grapper = links_dict[name]
+            result = requests.get(url_grapper).text
+            doc = BeautifulSoup(result, 'html.parser')
 
-        try:
-            cur = conn.cursor()
-            query = '''INSERT INTO recipes(title, ingredients, servings, instructions, image) VALUES(%s, %s, %s, %s, %s)'''
-            user_query = '''INSERT INTO user_recipes(user_handle, recipe_owner, original_recipe) VALUES(%s, %s, %s)'''
-            record_to_insert = (
-            rtitle, ringredients, rservings, rinstructions, psycopg2.Binary(rimage) if rimage else None)
+            # Extract image URL
+            try:
+                image_tag = doc.find('div', {'class': 'col-md-4 col-sm-4'})
+                if image_tag:
+                    image_tag = image_tag.findAll('div')[0].findAll('img')[0]
+                    image_url = image_tag['src']
+                    image_url_fixed = image_url.replace('../..', '')
+                    rimage_url = base_url + image_url_fixed
+                    try:
+                        rimage = requests.get(rimage_url).content  # Fetch image data
+                    except requests.exceptions.RequestException as e:
+                        print(f"Error! Failed to fetch image from {rimage_url}: {e}")
+                        rimage = None
+                else:
+                    print("Failed to find image tag.")
+                    rimage = None
+            except AttributeError:
+                print("Failed to find image tag.")
+                rimage = None
 
-            '''user_recipe_to_insert = (
-                recipe_handle, recipe_handle, original_recipe)'''
+            # Extract other details
+            try:
+                rtitle = doc.find('h1', {'class': 'red'}).text.strip()
+                ringredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
+                rservings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div',
+                                                                                                                  {
+                                                                                                                      'class': 'f12 f12'})[
+                    1].text.strip()
+                rinstructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
+            except AttributeError as e:
+                print(f"Failed to find recipe details: {e}")
+                continue
 
-            cur.execute(query, record_to_insert)
-            '''cur.execute(user_query, user_recipe_to_insert)'''
-            conn.commit()
-            conn.close()
-        except Exception as e:
-            print(f"Failed to insert data: {e}")
+            print(f'images: {rimage_url}')
+            try:
+                DATABASE_URL = os.environ['DATABASE_URL']
+                conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+            except Exception as e:
+                conn = psycopg2.connect(
+                    host="localhost",
+                    database="flavors_api",
+                    user=os.environ['DB_USERNAME'],
+                    password=os.environ['DB_PASSWORD'])
+                print(f"Failed to connect to database: {e}")
+                continue
+
+            try:
+                cur = conn.cursor()
+                query = '''INSERT INTO recipes(title, ingredients, servings, instructions, image, recipe_category) 
+                           VALUES(%s, %s, %s, %s, %s, %s)'''
+                record_to_insert = (
+                    rtitle, ringredients, rservings, rinstructions, psycopg2.Binary(rimage) if rimage else None, category
+                )
+                cur.execute(query, record_to_insert)
+                conn.commit()
+                cur.close()
+            except Exception as e:
+                print(f"Failed to insert data: {e}")
+                conn.rollback()
+
+        conn.close()
 
 except Exception as e:
     print(f"Failed to establish a new connection: {e}")
-
 
 # Home screen
 @app.route('/', methods=['GET'])
@@ -895,8 +911,6 @@ def dashboard():
     return render_template('dashboard.html', username=session['username'], email=session['email'])
 
 
-
-
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -937,7 +951,7 @@ def signup():
 
 # Home screen
 @app.route('/recipes/category', methods=['GET'])
-def all_recipes():
+def all_recipe():
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -949,31 +963,38 @@ def all_recipes():
             password=os.environ['DB_PASSWORD'])
 
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    # all_recipes = cur.execute('SELECT * FROM recipes;').fetchall()
-    cur.execute('SELECT * FROM recipes;')
-    recipes = cur.fetchall()
 
-    return render_template('all_recipe.html', recipes=recipes)
+    # Query the distinct recipe categories
+    cur.execute("SELECT DISTINCT recipe_category FROM recipes")
+    categorie = [row['recipe_category'] for row in cur.fetchall()]
 
-@app.route('/recipes/category/meat', methods=['GET']) #Change 'meat' to dynamic research on internet
-def category_recipes():
+    cur.close()
+    conn.close()
+
+    return render_template('all_recipe.html', categories=categories)
+
+
+@app.route('/recipes/category/<category>')
+def category_recipe(category):
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-    except:
+    except Exception as e:
+        print(f"Failed to connect to database: {e}")
         conn = psycopg2.connect(
             host="localhost",
             database="flavors_api",
             user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            password=os.environ['DB_PASSWORD']
+        )
 
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    # all_recipes = cur.execute('SELECT * FROM recipes;').fetchall()
-    cur.execute('SELECT * FROM recipes;')
+    cur.execute('SELECT * FROM recipes WHERE recipe_category = %s;', (category,))
     recipes = cur.fetchall()
+    cur.close()
+    conn.close()
 
     return render_template('category_recipe.html', recipes=recipes)
-
 
 
 def get_recipe_id(rep_id):
