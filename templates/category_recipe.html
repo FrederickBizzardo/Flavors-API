@@ -10,7 +10,7 @@
 
 {% block content %}
     <div class="container">
-    <div class="pt-32 px-8">
+    <div class="pt-32 px-32">
     <!--<h1 class="title">{% block title %} Flavors {% endblock %}</h1>-->
 
     <div class="box">
@@ -40,14 +40,15 @@
         </div>
     </form> -->
     <!--rep_id=recipe['rep_id']), 'recipe' comes from for loop '..recipe in recipes.. for loop below'-->
-
+    <section class="pb-20 pt-10">
     {%for recipe in recipes %}
         <a href="{{ url_for('recipe_id', rep_id=recipe['rep_id']) }}">
-            <h2 class="">{{ recipe['title'] }}</h2>
+            <h2 class="pb-2">{{ recipe['title'] }}</h2>
         </a>
         <span class="badge badge-primary">{{ recipe['created'] }}</span>
         <hr>
     {% endfor %}
+    </section>
     </div>
     </div>
 {% endblock %}

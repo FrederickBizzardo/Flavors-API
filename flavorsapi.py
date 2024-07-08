@@ -868,6 +868,16 @@ def terms():
     return render_template('terms.html')
 
 
+@app.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html')
+
+
+@app.route('/contact', methods=['GET'])
+def contact():
+    return render_template('contact.html')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -1045,6 +1055,7 @@ def create():
         title = request.form['title']
         ingredients = request.form['ingredients']
         servings = request.form['servings']
+        category = request.form['recipe_category']
         instructions = request.form['instructions']
 
         if not title:

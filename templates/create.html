@@ -7,14 +7,14 @@
 
 
 {% block content %}
-    <div class="pt-32 px-8">
+    <div class="pt-32 px-32">
     <h1 class="text-6xl pb-20">Create a New Recipe</h1>
 
 
-        <div class="form-group">
+        <div class="">
             <h1 class="pb-2">Title</h1>
             <input type="text" name="title"
-               placeholder="Recipe Title" class="bg-[#f3f3f3] h-[40px] form-control"
+               placeholder="" class="bg-[#f3f3f3] create h-[40px]"
                value="{{ request.form['title'] }}"></input>
         </div>
 
@@ -25,8 +25,8 @@
     <div class="form-group pt-10">
         
         <h1 class="pb-2">Ingredients</h1>
-        <textarea name="ingredients" placeholder="Ingredients"
-                  class="form-control h-auto bg-[#f3f3f3]">{{ request.form['ingredients'] }}</textarea>
+        <textarea name="ingredients" placeholder=""
+                  class="form-control create h-auto bg-[#f3f3f3]">{{ request.form['ingredients'] }}</textarea>
     </div>
         <!--<div class="add">
             <button class="second_btn" name='ingredients'>Add</button>
@@ -40,7 +40,7 @@
     <div class="form-group pt-10">
         <h1 class="pb-2">Servings</h1>
         <input type="text" name="servings"
-               placeholder="Servings" class="form-control h-[40px] bg-[#f3f3f3]"
+               placeholder="" class="form-control create h-[40px] bg-[#f3f3f3]"
                value="{{ request.form['servings'] }}"></input>
     </div>
 
@@ -49,14 +49,14 @@
             <p>Select between one of these categories:<br/>
             <span class="pb-2 font-bold">Meat, Dessert, add[more:fred]</span></p>
             <input type="text" name="category"
-               placeholder="Category" class="form-control h-[40px] bg-[#f3f3f3]"
+               placeholder="" class="form-control create h-[40px] bg-[#f3f3f3]"
                value="{{ request.form['recipe_category'] }}">
         </div>
 
     <div class="form-group pt-10">
         <h1 class="pb-2">Instructions</h1>
-        <textarea name="instructions" placeholder="Instructions"
-                  class="form-control bg-[#f3f3f3] h-auto">{{ request.form['instructions'] }}</textarea>
+        <textarea name="instructions" placeholder=""
+                  class="form-control create bg-[#f3f3f3] h-auto">{{ request.form['instructions'] }}</textarea>
         <!--<div class="add_instruct">
             <button class="second_btn" name='instructions'>Add</button>
         </div>
@@ -74,7 +74,8 @@
 <div class="box">
     <span class='discl'>Disclaimer:</span><br><br>
     <p>
-        Please do read our terms & conditions before create a recipe!
+        Please do read our terms & conditions before create a recipe!<br/>
+        <span class="font-OnestB text-teal-700 text-smaller"><a href="{{url_for('terms')}}">Terms &amp; Conditions</a></span>
     </p>
 </div>
     </div>
