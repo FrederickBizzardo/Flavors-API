@@ -11,72 +11,43 @@
     <h1 class="text-6xl pb-20">Create a New Recipe</h1>
 
 
-        <div class="">
-            <h1 class="pb-2">Title</h1>
-            <input type="text" name="title"
-               placeholder="" class="bg-[#f3f3f3] create h-[40px]"
-               value="{{ request.form['title'] }}"></input>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="">
+                <h1 class="pb-2">Title</h1>
+                <input type="text" name="title" placeholder="" class="bg-[#f3f3f3] create h-[40px]" value="{{ request.form.get('title', '') }}">
+            </div>
+            <div class="form-group pt-10">
+                <h1 class="pb-2">Ingredients</h1>
+                <textarea name="ingredients" placeholder="" class="form-control create h-auto bg-[#f3f3f3]">{{ request.form.get('ingredients', '') }}</textarea>
+            </div>
+            <div class="form-group pt-10">
+                <h1 class="pb-2">Servings</h1>
+                <input type="text" name="servings" placeholder="" class="form-control create h-[40px] bg-[#f3f3f3]" value="{{ request.form.get('servings', '') }}">
+            </div>
+            <div class="form-group pt-10">
+                <h1>Category</h1>
+                <p>Select between one of these categories:<br/>
+                <span class="pb-2 font-bold">Meat, Dessert, etc.</span></p>
+                <input type="text" name="recipe_category" placeholder="" class="form-control create h-[40px] bg-[#f3f3f3]" value="{{ request.form.get('recipe_category', '') }}">
+            </div>
+            <div class="form-group pt-10">
+                <h1 class="pb-2">Instructions</h1>
+                <textarea name="instructions" placeholder="" class="form-control create bg-[#f3f3f3] h-auto">{{ request.form.get('instructions', '') }}</textarea>
+            </div>
+            <div class="form-group pt-10">
+                <h1 class="pb-2">Image</h1>
+                <input type="file" name="image" class="form-control create bg-[#f3f3f3] h-[40px]">
+            </div>
+            <div class="pt-6 text-white">
+                <button type="submit" class="submit w-[20%] h-[5%] bg-black text-white">Submit</button>
+            </div>
+        </form>
+        <div class="box">
+            <span class='discl'>Disclaimer:</span><br><br>
+            <p>
+                Please do read our terms & conditions before create a recipe!<br/>
+                <span class="font-OnestB text-teal-700 text-smaller"><a href="{{url_for('terms')}}">Terms &amp; Conditions</a></span>
+            </p>
         </div>
-
-
-
-    
-
-    <div class="form-group pt-10">
-        
-        <h1 class="pb-2">Ingredients</h1>
-        <textarea name="ingredients" placeholder=""
-                  class="form-control create h-auto bg-[#f3f3f3]">{{ request.form['ingredients'] }}</textarea>
-    </div>
-        <!--<div class="add">
-            <button class="second_btn" name='ingredients'>Add</button>
-        </div>
-
-    </div>
-    <div class="delete">
-        <button class="second_btn"><a> {{ ingredients }}</a><i class="fa fa-close"></i> </button>
-    </div>-->
-
-    <div class="form-group pt-10">
-        <h1 class="pb-2">Servings</h1>
-        <input type="text" name="servings"
-               placeholder="" class="form-control create h-[40px] bg-[#f3f3f3]"
-               value="{{ request.form['servings'] }}"></input>
-    </div>
-
-        <div class="form-group pt-10">
-            <h1>Category</h1>
-            <p>Select between one of these categories:<br/>
-            <span class="pb-2 font-bold">Meat, Dessert, add[more:fred]</span></p>
-            <input type="text" name="category"
-               placeholder="" class="form-control create h-[40px] bg-[#f3f3f3]"
-               value="{{ request.form['recipe_category'] }}">
-        </div>
-
-    <div class="form-group pt-10">
-        <h1 class="pb-2">Instructions</h1>
-        <textarea name="instructions" placeholder=""
-                  class="form-control create bg-[#f3f3f3] h-auto">{{ request.form['instructions'] }}</textarea>
-        <!--<div class="add_instruct">
-            <button class="second_btn" name='instructions'>Add</button>
-        </div>
-    </div>
-    <div class="instruct_delete">
-        <button class="third_btn"><a> {{ instructions }}</a><i class="fa fa-close"></i> </button>
-    </div>-->
-
-    <div class="pt-6  text-white">
-        <button type="submit" class="submit w-[20%] h-[5%] bg-black text-white">Submit</button>
-    </div>
-    </div>
-</form>
-
-<div class="box">
-    <span class='discl'>Disclaimer:</span><br><br>
-    <p>
-        Please do read our terms & conditions before create a recipe!<br/>
-        <span class="font-OnestB text-teal-700 text-smaller"><a href="{{url_for('terms')}}">Terms &amp; Conditions</a></span>
-    </p>
-</div>
     </div>
 {% endblock %}

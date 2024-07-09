@@ -695,6 +695,7 @@ def recipe_image(id):
 
 from flask import Flask, request, jsonify, render_template, flash, redirect, url_for, abort, session
 from bs4 import BeautifulSoup
+from functools import wraps
 import psycopg2
 import psycopg2.extras
 import requests
@@ -878,6 +879,16 @@ def contact():
     return render_template('contact.html')
 
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash('You need to be logged in to access this page.')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -914,6 +925,7 @@ def login():
     return render_template('login.html')
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
     if 'user_id' not in session:
         return redirect(url_for('login'))
@@ -958,6 +970,17 @@ def signup():
             return redirect(url_for('home'))
 
     return render_template('register.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    session.pop('username', None)
+    session.pop('email', None)
+    flash('You have been logged out.')
+    return redirect(url_for('login'))
+
+
 
 # Home screen
 @app.route('/recipes/category', methods=['GET'])
@@ -1050,6 +1073,7 @@ def recipe_id(rep_id):
 
 
 @app.route('/create', methods=('GET', 'POST'))
+@login_required
 def create():
     if request.method == 'POST':
         title = request.form['title']
@@ -1058,12 +1082,19 @@ def create():
         category = request.form['recipe_category']
         instructions = request.form['instructions']
 
+        image = request.files['image']
+        image_data = image.read() if image else None
+
         if not title:
             flash('Title is required!')
         if not ingredients:
             flash('Ingredients is required!')
         if not servings:
             flash('Servings is required!')
+        if not category:
+            flash('Category is required!')
+        if not image:
+            flash('Image is required!')
         if not instructions:
             flash('Instructions is required!')
 
@@ -1078,8 +1109,8 @@ def create():
                     user=os.environ['DB_USERNAME'],
                     password=os.environ['DB_PASSWORD'])
             cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-            cur.execute('INSERT INTO recipes (title, ingredients, servings, instructions) VALUES (%s, %s, %s, %s)',
-                        (title, ingredients, servings, instructions))
+            cur.execute('INSERT INTO recipes (title, ingredients, servings, instructions, image, recipe_category) VALUES (%s, %s, %s, %s, %s, %s)',
+                        (title, ingredients, servings, instructions, psycopg2.Binary(image_data), category))
             conn.commit()
             conn.close()
             return redirect(url_for('home'))
@@ -1094,6 +1125,11 @@ def create():
     # instructions = instructions.append(instructions)
     # instructions = request.form.get('instructions')
     return render_template('create.html', ingredients=ingredients)
+
+
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route('/flavors/api/recipes', methods=['GET'])

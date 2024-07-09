@@ -27,24 +27,33 @@
                 <li class="text-black pt-2">
                     <a class="" href="{{url_for('all_recipe')}}">All Recipes</a>
                 </li>
-                <li class="pt-2">
+                {% if 'user_id' in session %}
+              <li class="pt-2">
                 <a class="" href="{{url_for('create')}}">New Recipe</a>
-                </li>
-                <li class="text-black pt-2">
-                    <a class=" text-black" href="{{url_for('contact')}}">Contact</a>
-                </li>
-                <li class="text-black pt-2">
-                    <a class=" text-black" href="{{url_for('about')}}">About</a>
-                </li>
-                <li class="text-white pr-4">
-                    <a href="{{url_for('login')}}"><button class=" w-[150%] h-[100%] bg-black rounded-xl text-white">Log In</button></a>
-                </li>
+              </li>
+              <li class="pt-2">
+                <a class="" href="{{url_for('dashboard')}}">Dashboard</a>
+              </li>
+              <li class=" pr-4">
+                  <a class="" href="{{url_for('logout')}}"><button class="w-[150%] h-[100%] bg-red-600 rounded-xl text-white">Logout</button></a>
+              </li>
+            {% else %}
+              <li class="text-black pt-2">
+                <a class="text-black" href="{{url_for('contact')}}">Contact</a>
+              </li>
+              <li class="text-black pt-2">
+                <a class="text-black" href="{{url_for('about')}}">About</a>
+              </li>
+              <li class="text-white pr-4">
+                <a href="{{url_for('login')}}"><button class="w-[150%] h-[100%] bg-black rounded-xl text-white">Log In</button></a>
+              </li>
+            {% endif %}
             </ul>
         </div>
             </div>
     </nav>
     <!--<div class="container">-->
-    <div class="">
+    <div class="relative top-32 text-center">
       {% for message in get_flashed_messages() %}
         <div class="alert alert-danger">{{ message }}</div>
       {% endfor %}

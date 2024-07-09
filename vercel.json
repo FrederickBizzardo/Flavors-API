@@ -1,14 +1,14 @@
  {
      "builds": [
          {
-             "src": "api/flavorsapi.py",
+             "src": "flavorsapi.py",
              "use": "@vercel/python"
          }
      ],
      "routes": [
          {
              "src": "/(.*)",
-             "dest": "api/flavorsapi.py"
+             "dest": "flavorsapi.py"
          }
      ]
  }
