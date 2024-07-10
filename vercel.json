@@ -2,7 +2,11 @@
      "builds": [
          {
              "src": "flavorsapi.py",
-             "use": "@vercel/python"
+             "use": "@vercel/python",
+              "config": {
+                "memory": 256,
+                "maxDuration": 60
+            }
          }
      ],
      "routes": [
