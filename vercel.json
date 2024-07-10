@@ -1,19 +1,13 @@
 {
-  "builds": [
-    {
-      "src": "flavorsapi.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "flavorsapi.py"
-    }
-  ],
   "functions": {
     "flavorsapi.py": {
       "maxDuration": 60
     }
-  }
+  },
+  "routes": [
+    { "src": "/(.*)", "dest": "flavorsapi.py" }
+  ],
+  "builds": [
+    { "src": "flavorsapi.py", "use": "@vercel/python" }
+  ]
 }
