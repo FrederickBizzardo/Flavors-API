@@ -279,8 +279,8 @@ app.config['SECRET_KEY'] = 'your secret key' '''
             conn = psycopg2.connect(
                 host="localhost",
                 database="flavors_api",
-                user=os.environ['DB_USERNAME'],
-                password=os.environ['DB_PASSWORD'])
+                user=os.environ['PGUSER'],
+                password=os.environ['PGPASSWORD'])
 
         try:
             cur = conn.cursor()'''
@@ -322,8 +322,8 @@ def home():
         conn = psycopg2.connect(
             host="localhost", 
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
 
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     #all_recipes = cur.execute('SELECT * FROM recipes;').fetchall()
@@ -340,8 +340,8 @@ def get_recipe_id(rep_id):
         conn = psycopg2.connect(
             host="localhost", 
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
 
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     cur.execute('SELECT * FROM recipes WHERE rep_id = %s', (rep_id,))
@@ -385,8 +385,8 @@ def create():
                 conn = psycopg2.connect(
                     host="localhost", 
                     database="flavors_api",
-                    user=os.environ['DB_USERNAME'],
-                    password=os.environ['DB_PASSWORD'])
+                    user=os.environ['PGUSER'],
+                    password=os.environ['PGPASSWORD'])
             cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)      
             cur.execute('INSERT INTO recipes (title, ingredients, servings, instructions) VALUES (%s, %s, %s, %s)',
                          (title, ingredients, servings, instructions))
@@ -416,12 +416,12 @@ def api_all():
         conn = psycopg2.connect(
             host="localhost", 
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
         #host="localhost", 
         #database="flavors_api",
-        #DB_USERNAME=os.environ['DB_USERNAME'],
-        #DB_PASSWORD=os.environ['DB_PASSWORD']
+        #DB_USERNAME=os.environ['PGUSER'],
+        #DB_PASSWORD=os.environ['PGPASSWORD']
         
         #URL = os.environ.get('postgres://etryrrveyngcvx:7eb31e76ed3b8452749bada81b9058ee51cc902b7ea996b3a2b566ab841dbe5b@ec2-44-198-82-71.compute-1.amazonaws.com:5432/ddskfvmrts9ipg')
         #DATABASE_URL=os.environ.get('postgres://etryrrveyngcvx:7eb31e76ed3b8452749bada81b9058ee51cc902b7ea996b3a2b566ab841dbe5b@ec2-44-198-82-71.compute-1.amazonaws.com:5432/ddskfvmrts9ipg -a flavorsapi')
@@ -481,8 +481,8 @@ def api_filter():
         conn = psycopg2.connect(
             host="localhost", 
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
 
     #conn.row_factory = dict_factory
     #cur = conn.cursor()
@@ -513,8 +513,8 @@ def api_post():
         conn = psycopg2.connect(
             host="localhost", 
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
 
     recipes = request.get_json()
  
@@ -553,8 +553,8 @@ def get_recipes(rep_name):
       #conn = psycopg2.connect(
         #host="localhost", 
         #database="flavors_api",
-        #user=os.environ['DB_USERNAME'],
-        #password=os.environ['DB_PASSWORD'])
+        #user=os.environ['PGUSER'],
+        #password=os.environ['PGPASSWORD'])
     #cur = conn.cursor()
     #cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     #statement = "SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = ?"
@@ -571,8 +571,8 @@ def get_recipes(rep_name):
         conn = psycopg2.connect(
             host="localhost", 
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
 
     
 
@@ -603,8 +603,8 @@ def get_db_connection():
         conn = psycopg2.connect(
             host="localhost", 
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
     #conn.row_factory = sqlite3.Row
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     
@@ -619,8 +619,8 @@ def get_recipe(rep_name):
         conn = psycopg2.connect(
             host="localhost", 
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
     post = conn.execute('SELECT *FROM recipes WHERE title = %s', {'recipe': rep_name}).fetchone()
     conn.close()
     if post is None:
@@ -646,8 +646,8 @@ def update_recipe(rep_id):
         db = psycopg2.connect(
             host="localhost", 
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
 
     cursor = db.cursor()
     cursor.execute("UPDATE recipes SET title = %s, ingredients = %s, servings = %s, instructions = %s WHERE rep_id = %s", (recipes_edit['title'], recipes_edit['ingredients'], recipes_edit['servings'], recipes_edit['instructions'], rep_id))
@@ -667,8 +667,8 @@ def delete_recipe(rep_id):
         db = psycopg2.connect(
             host="localhost", 
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
 
     cursor = db.cursor()
     statement = "DELETE FROM recipes WHERE rep_id = %s"
@@ -785,8 +785,8 @@ try:
             conn = psycopg2.connect(
                 host="localhost",
                 database="flavors_api",
-                user=os.environ['DB_USERNAME'],
-                password=os.environ['DB_PASSWORD'])
+                user=os.environ['PGUSER'],
+                password=os.environ['PGPASSWORD'])
 
         try:
             cur = conn.cursor()
@@ -812,8 +812,8 @@ def home():
         conn = psycopg2.connect(
             host="localhost",
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
 
     cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     #all_recipes = cur.execute('SELECT * FROM recipes;').fetchall()
@@ -831,8 +831,8 @@ def get_recipe_id(rep_id):
         conn = psycopg2.connect(
             host="localhost",
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
 
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cur.execute('SELECT * FROM recipes WHERE rep_id = %s', (rep_id,))
@@ -853,8 +853,8 @@ def recipe_id(rep_id):
         conn = psycopg2.connect(
             host="localhost",
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cur.execute('SELECT * FROM recipes WHERE rep_id = %s', (rep_id,))
     recipe = cur.fetchone()
@@ -890,8 +890,8 @@ def create():
                 conn = psycopg2.connect(
                     host="localhost",
                     database="flavors_api",
-                    user=os.environ['DB_USERNAME'],
-                    password=os.environ['DB_PASSWORD'])
+                    user=os.environ['PGUSER'],
+                    password=os.environ['PGPASSWORD'])
             cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
             cur.execute('INSERT INTO recipes (title, ingredients, servings, instructions) VALUES (%s, %s, %s, %s)',
                         (title, ingredients, servings, instructions))
@@ -920,8 +920,8 @@ def api_all():
         conn = psycopg2.connect(
             host="localhost",
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD']
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD']
         )
 
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
@@ -983,8 +983,8 @@ def api_filter():
         conn = psycopg2.connect(
             host="localhost",
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
 
     # conn.row_factory = dict_factory
     # cur = conn.cursor()
@@ -1017,8 +1017,8 @@ def api_post():
         conn = psycopg2.connect(
             host="localhost",
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
 
     recipes = request.get_json()
 
@@ -1077,8 +1077,8 @@ def get_recipes(rep_name):
         conn = psycopg2.connect(
             host="localhost",
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
 
     # cur = conn.cursor()
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
@@ -1109,8 +1109,8 @@ def get_db_connection():
         conn = psycopg2.connect(
             host="localhost",
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
     # conn.row_factory = sqlite3.Row
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
@@ -1126,8 +1126,8 @@ def get_recipe(rep_name):
         conn = psycopg2.connect(
             host="localhost",
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
     post = conn.execute('SELECT *FROM recipes WHERE title = %s', {'recipe': rep_name}).fetchone()
     conn.close()
     if post is None:
@@ -1154,8 +1154,8 @@ def update_recipe(rep_id):
         db = psycopg2.connect(
             host="localhost",
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
 
     cursor = db.cursor()
     cursor.execute(
@@ -1179,8 +1179,8 @@ def delete_recipe(rep_id):
         db = psycopg2.connect(
             host="localhost",
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
 
     cursor = db.cursor()
     statement = "DELETE FROM recipes WHERE rep_id = %s"
@@ -1198,8 +1198,8 @@ def image(id):
         conn = psycopg2.connect(
             host="localhost",
             database="flavors_api",
-            user=os.environ['DB_USERNAME'],
-            password=os.environ['DB_PASSWORD'])
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD'])
 
     cur = conn.cursor()
     cur.execute('SELECT image FROM recipes WHERE rep_id = %s', (id,))
