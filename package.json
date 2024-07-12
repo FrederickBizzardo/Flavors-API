@@ -1,0 +1,23 @@
+{
+  "name": "flavors-api",
+  "version": "1.0.0",
+  "description": "1. Use Linux to commit on GitHub or Heroku/\r 2. Use Linux to run Flask. e.g: 'export FLASK_APP=flavorsapi', 'export FLASK_ENV=development', 'export DB_USERNAME=\"YOUR_USERNAME\" ', 'export DB_PASSWORD=\"YOUR_PASSWORD\" ', then 'flask run'.\r 3. To use make files execute, > make git m=\"message\"\r 4. Install TailwindCSS\r 5. Install Flask\r 6. Intstall Postgresql",
+  "main": "tailwind.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "flask-dev": "set FLASK_DEBUG=1 && python.exe -m pip install --upgrade pip && pip3 install -r requirements.txt && flask run",
+    "vercel-dev": "python.exe -m pip install --upgrade pip && pip3 install -r requirements.txt && flask run",
+    "start": "concurrently \"npm run flask-dev\" \"npx tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch\"",
+    "vercel-start": "concurrently \"npm run vercel-dev\" \"npx tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "tailwindcss": "^3.4.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}

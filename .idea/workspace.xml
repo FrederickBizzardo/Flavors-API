@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e2b1a77c-5b1c-4ff9-8e8e-ae43a4a645ce" name="Changes" comment="vercel.json FIXing 2">
+      <change beforePath="$PROJECT_DIR$/vercel.json" beforeDir="false" afterPath="$PROJECT_DIR$/vercel.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+        <option value="CSS File" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2iVEqjhqSkBQKyo5rLFoeEVelhT" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Flask server.Flavors-api.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\fgnye\OneDrive\Desktop\Flavors-api" />
+      <recent name="C:\Users\fgnye\OneDrive\Desktop\Flavors-api\api" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Flask server.Flavors-api">
+    <configuration name="Flavors-api" type="PythonConfigurationType" factoryName="Python">
+      <module name="Flavors-api" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/flavorsapi.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Flavors-api" type="Python.FlaskServer">
+      <module name="Flavors-api" />
+      <option name="target" value="$PROJECT_DIR$/flavorsapi.py" />
+      <option name="targetType" value="PATH" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Flask server.Flavors-api" />
+      <item itemvalue="Python.Flavors-api" />
+    </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-PY-241.15989.155" />
+        <option value="bundled-python-sdk-babbdf50b680-7c6932dee5e4-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.15989.155" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e2b1a77c-5b1c-4ff9-8e8e-ae43a4a645ce" name="Changes" comment="" />
+      <created>1719567547175</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1719567547175</updated>
+      <workItem from="1719567553972" duration="10598000" />
+      <workItem from="1719587145602" duration="571000" />
+      <workItem from="1719588067680" duration="4271000" />
+      <workItem from="1719659720229" duration="7233000" />
+      <workItem from="1719671535153" duration="11612000" />
+      <workItem from="1719735630159" duration="4344000" />
+      <workItem from="1719742229252" duration="19610000" />
+      <workItem from="1719838379030" duration="2173000" />
+      <workItem from="1719903852669" duration="3935000" />
+      <workItem from="1719989431486" duration="14288000" />
+      <workItem from="1720075607338" duration="13720000" />
+      <workItem from="1720103664561" duration="12228000" />
+      <workItem from="1720246712452" duration="25786000" />
+      <workItem from="1720285373806" duration="2804000" />
+      <workItem from="1720343899836" duration="18938000" />
+      <workItem from="1720448109954" duration="8413000" />
+      <workItem from="1720509111438" duration="3629000" />
+      <workItem from="1720594629747" duration="8175000" />
+      <workItem from="1720680215803" duration="5547000" />
+    </task>
+    <task id="LOCAL-00001" summary="initial commit">
+      <option name="closed" value="true" />
+      <created>1719587668366</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1719587668367</updated>
+    </task>
+    <task id="LOCAL-00002" summary="initial commit">
+      <option name="closed" value="true" />
+      <created>1719591126828</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1719591126835</updated>
+    </task>
+    <task id="LOCAL-00003" summary="major updates and intergrations">
+      <option name="closed" value="true" />
+      <created>1719839510817</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1719839510817</updated>
+    </task>
+    <task id="LOCAL-00004" summary="major updates and intergrations">
+      <option name="closed" value="true" />
+      <created>1719924889611</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1719924889612</updated>
+    </task>
+    <task id="LOCAL-00005" summary="major updates and intergrations: all_recipe.html dynamic url fix">
+      <option name="closed" value="true" />
+      <created>1720353157117</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1720353157119</updated>
+    </task>
+    <task id="LOCAL-00006" summary="major updates and intergrations:">
+      <option name="closed" value="true" />
+      <created>1720452050020</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1720452050020</updated>
+    </task>
+    <task id="LOCAL-00007" summary="major updates and intergrations:">
+      <option name="closed" value="true" />
+      <created>1720528859427</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1720528859428</updated>
+    </task>
+    <task id="LOCAL-00008" summary="major updates and intergrations:">
+      <option name="closed" value="true" />
+      <created>1720604297989</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1720604297990</updated>
+    </task>
+    <task id="LOCAL-00009" summary="vercel.json FIX TIMEOUT">
+      <option name="closed" value="true" />
+      <created>1720606002027</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1720606002027</updated>
+    </task>
+    <task id="LOCAL-00010" summary="vercel.json FIX TIMEOUT">
+      <option name="closed" value="true" />
+      <created>1720606548815</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1720606548817</updated>
+    </task>
+    <task id="LOCAL-00011" summary="vercel.json FIX">
+      <option name="closed" value="true" />
+      <created>1720607030769</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1720607030772</updated>
+    </task>
+    <task id="LOCAL-00012" summary="vercel.json FIXing">
+      <option name="closed" value="true" />
+      <created>1720608253128</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1720608253131</updated>
+    </task>
+    <task id="LOCAL-00013" summary="vercel.json FIXing 2">
+      <option name="closed" value="true" />
+      <created>1720608669960</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1720608669964</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="initial commit" />
+    <MESSAGE value="major updates and intergrations" />
+    <MESSAGE value="major updates and intergrations: all_recipe.html dynamic url fix" />
+    <MESSAGE value="major updates and intergrations:" />
+    <MESSAGE value="vercel.json FIX TIMEOUT" />
+    <MESSAGE value="vercel.json FIX" />
+    <MESSAGE value="vercel.json FIXing" />
+    <MESSAGE value="vercel.json FIXing 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="vercel.json FIXing 2" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Flavors_api$Flavors_api.coverage" NAME="Flavors-api Coverage Results" MODIFIED="1720179138247" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+  </component>
+</project>
