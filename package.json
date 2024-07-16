@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "flask-dev": "set FLASK_DEBUG=1 && python.exe -m pip install --upgrade pip && pip3 install -r requirements.txt && flask run",
     "vercel-dev": "python.exe -m pip install --upgrade pip && pip3 install -r requirements.txt && flask run",
-    "start": "concurrently \\\\\\\"npm run flask-dev\\\\\\\" \\\\\\\"npx tailwindcss -i static/css/input.css -o ./static/css/output.css --watch\\\\\\\"",
-    "vercel-start": "concurrently \\\\\\\"npm run vercel-dev\\\\\\\" \\\\\\\"npx tailwindcss -i static/css/input.css -o ./static/css/output.css --watch\\\\\\\""
+    "start": "concurrently \"npm run flask-dev\" \"npx tailwindcss -i static/css/input.css -o ./static/css/output.css --watch\"",
+    "vercel-start": "concurrently \"npm run vercel-dev\" \"npx tailwindcss -i static/css/input.css -o ./static/css/output.css --watch\""
   },
   "keywords": [],
   "author": "",

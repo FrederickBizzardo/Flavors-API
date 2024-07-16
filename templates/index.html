@@ -16,7 +16,14 @@
                 </section>
                 <section class="pt-28">
                     <h1 class="special text-right text-3xl">Special</h1>
-
+                    {% if recipe %}
+                        <div class="recipe-container">
+                            <img class="recipe-image" src="{{ url_for('image', id=recipe['rep_id']) }}" alt="{{ recipe['title'] }}">
+                            <h2 class="recipe-title">{{ recipe['title'] }}</h2>
+                        </div>
+                    {% else %}
+                        <p>No recipe available.</p>
+                    {% endif %}
                 </section>
                 <div class="gap">
                 </div>
