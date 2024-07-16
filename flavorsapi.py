@@ -187,7 +187,7 @@ def home():
 
     conn.close()
 
-    return render_template('templates/index.html', recipe=daily_recipe)
+    return render_template('index.html', recipe=daily_recipe)
 
 
 @app.route('/terms', methods=['GET'])
@@ -207,17 +207,17 @@ def terms():
     cur.execute('SELECT * FROM users;')
     recipes = cur.fetchall()
 
-    return render_template('templates/terms.html')
+    return render_template('terms.html')
 
 
 @app.route('/about', methods=['GET'])
 def about():
-    return render_template('templates/about.html')
+    return render_template('about.html')
 
 
 @app.route('/contact', methods=['GET'])
 def contact():
-    return render_template('templates/contact.html')
+    return render_template('contact.html')
 
 
 def login_required(f):
@@ -263,7 +263,7 @@ def login():
             else:
                 flash('Invalid username or password!')
 
-    return render_template('templates/login.html')
+    return render_template('login.html')
 
 @app.route('/dashboard')
 @login_required
@@ -271,7 +271,7 @@ def dashboard():
     if 'user_id' not in session:
         return redirect(url_for('login'))
 
-    return render_template('templates/dashboard.html', username=session['username'], email=session['email'])
+    return render_template('dashboard.html', username=session['username'], email=session['email'])
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -310,7 +310,7 @@ def signup():
             conn.close()
             return redirect(url_for('home'))
 
-    return render_template('templates/register.html')
+    return render_template('register.html')
 
 
 @app.route('/logout')
@@ -345,7 +345,7 @@ def all_recipe():
     cur.close()
     conn.close()
 
-    return render_template('templates/all_recipe.html', categories=categories)
+    return render_template('all_recipe.html', categories=categories)
 
 
 @app.route('/recipes/category/<category>')
@@ -368,7 +368,7 @@ def category_recipe(category):
     cur.close()
     conn.close()
 
-    return render_template('templates/category_recipe.html', recipes=recipes)
+    return render_template('category_recipe.html', recipes=recipes)
 
 
 def get_recipe_id(rep_id):
@@ -410,7 +410,7 @@ def recipe_id(rep_id):
     conn.close()
     if recipe is None:
         abort(404)
-    return render_template('templates/recipes.html', recipe=recipe)
+    return render_template('recipes.html', recipe=recipe)
 
 
 @app.route('/create', methods=('GET', 'POST'))
@@ -465,7 +465,7 @@ def create():
 
     # instructions = instructions.append(instructions)
     # instructions = request.form.get('instructions')
-    return render_template('templates/create.html', ingredients=ingredients)
+    return render_template('create.html', ingredients=ingredients)
 
 
 def allowed_file(filename):
