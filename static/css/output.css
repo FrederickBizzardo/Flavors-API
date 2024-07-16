@@ -620,6 +620,14 @@ video {
   top: 8rem;
 }
 
+.right-0 {
+  right: 0px;
+}
+
+.float-right {
+  float: right;
+}
+
 .mb-5 {
   margin-bottom: 1.25rem;
 }
@@ -780,6 +788,10 @@ video {
 
 .pr-4 {
   padding-right: 1rem;
+}
+
+.pr-5 {
+  padding-right: 1.25rem;
 }
 
 .pt-10 {

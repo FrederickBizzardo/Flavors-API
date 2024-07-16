@@ -213,3 +213,18 @@ li a {
     border-left: hidden;
     border-right: hidden;
 }
+
+.recipe-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Aligns items to the right */
+    padding-top: 1.5rem; /* pt-6 equivalent */
+}
+
+.recipe-image {
+    margin-bottom: 0.5rem; /* Space between image and title, equivalent to pt-2 for the title */
+}
+
+.recipe-title {
+    text-align: right;
+}
