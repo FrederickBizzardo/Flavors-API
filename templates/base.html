@@ -27,6 +27,9 @@
                 <li class="text-black pt-2">
                     <a class="" href="{{url_for('all_recipe')}}">All Recipes</a>
                 </li>
+                <li class="text-black pr-5">
+                    <a class="" href="{{url_for('search')}}"><button class="w-[150%] h-[100%] bg-red-600 rounded-xl text-white">Search</button></a>
+                </li>
                 {% if 'user_id' in session %}
               <li class="pt-2">
                 <a class="" href="{{url_for('create')}}">New Recipe</a>

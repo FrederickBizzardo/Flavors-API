@@ -228,3 +228,18 @@ li a {
 .recipe-title {
     text-align: right;
 }
+
+.recipe-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.recipe-item img {
+    margin-right: 20px;
+    max-width: 200px;
+}
+
+.recipe-details {
+    flex: 1;
+}

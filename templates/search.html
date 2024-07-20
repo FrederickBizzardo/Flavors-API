@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Recipe</title>
+</head>
+<body>
+{% extends 'base.html' %}
+{% block content %}
+    <div class="bg-[#f3f3f3]">
+    <div class="pt-32 px-32">
+        <div>
+            <h1 class="text-6xl">Recipes by Category</h1>
+        </div>
+        <section class="pt-10 pb-10">
+            <form action="{{ url_for('search') }}" method="get">
+                <input type="text" name="query" placeholder="Search by title" class="bg-[#f3f3f3] rounded-[10px] py-5 px-2">
+                <button type="submit">Search</button>
+            </form>
+        </section>
+        <!--Add search by: category, ingredients, servings, etc.-->
+        <section class="pt-10 pb-10">
+            <ul>
+             {% for category in categories %}
+                 <h1 class="pb-2 text-lg"><a href="{{ url_for('category_recipe', category=category) }}">{{ category }}</a></h1>
+             {% endfor %}
+            </ul>
+        </section>
+        {% if recipes %}
+                <section class="pt-10 pb-10">
+                    <h2 class="text-3xl">Search Results:</h2>
+                    <ul>
+                        {% for recipe in recipes %}
+                            <li class="recipe-item">
+                                <span><img src="{{ url_for('search_image', recipe_id=recipe[0]) }}" alt="{{ recipe[1] }}" style="max-width: 200px;"></span>
+                                <div class="recipe-details">
+                                    <h2>{{ recipe[1] }}</h2>
+                                    <p><strong>Ingredients:</strong> {{ recipe[2] }}</p>
+                                    <p><strong>Servings:</strong> {{ recipe[3] }}</p>
+                                    <p><strong>Instructions:</strong> {{ recipe[4] }}</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </section>
+            {% else %}
+                <section class="pt-10 pb-10">
+                    <h2 class="text-3xl">No recipes found</h2>
+                    <p>Try searching for a different title.</p>
+                </section>
+            {% endif %}
+    </div>
+    </div>
+{% endblock %}
+</body>
+</html>

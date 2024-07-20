@@ -1,6 +1,6 @@
 #!flask/bin/python
 # from flask_cors import CORS
-from flask import Flask, request, jsonify, render_template, flash, redirect, url_for, abort, session
+from flask import Flask, request, jsonify, render_template, flash, redirect, url_for, abort, session, send_file
 from bs4 import BeautifulSoup
 from functools import wraps
 import psycopg2
@@ -10,6 +10,7 @@ import os
 import base64
 import random
 import datetime
+import io
 
 
 app = Flask(__name__)
@@ -34,78 +35,65 @@ app.config['ENV'] = os.getenv('FLASK_ENV', 'production')
 
 
 categories = [
-    "meat", "desserts", "fish", "vegetables", "rice", "appetizers", "pasta",
+    "meat", "dessert", "fish", "vegetable", "rice", "appetizers", "pasta",
     "pizza-and-pie", "egg-and-omelette", "seafood", "salad", "bakery-and-bread",
     "sandwich", "soup", "sauce", "drink-and-cocktail", "ideas-for-dinner"
 ]
 
 base_url = "https://www.recipe-free.com"
+max_links_per_category = 120
 
 try:
+    session = requests.Session()  # Use a session to keep connections alive
+
     for category in categories:
-        page = 1
         titles = []
         links = []
-        links_dict = {}
-        url_no = 1
 
-        while page != 7:
+        for page in range(1, 7):
             url = f"{base_url}/categories/{category}-recipes/{page}"
-            response = requests.get(url)
-            html = response.content
-            soup = BeautifulSoup(html, "html.parser")
+            response = session.get(url)
+            soup = BeautifulSoup(response.content, "html.parser")
             category_content = soup.find('div', {'class': 'category_content centerindent for-this'})
+
+            if not category_content:
+                url = f"{base_url}/categories/{category}/{page}"
+                response = session.get(url)
+                soup = BeautifulSoup(response.content, "html.parser")
+                category_content = soup.find('div', {'class': 'category_content centerindent for-this'})
+
             if category_content:
                 for a in category_content.findAll('a', {'class': 'day'}):
                     titles.append(a.get_text(strip=True))
                     links.append(a.get('href'))
-            else:
-                print(f"No category content found for {category} on page {page}")
-            page += 1
 
-        for i, link in enumerate(links[:120], url_no):
-            name = f'url {url_no}'
-            links_dict[name] = link
-            url_no += 1
+            if len(links) >= max_links_per_category:
+                break
 
-            url_grapper = links_dict[name]
-            result = requests.get(url_grapper).text
+        for i, link in enumerate(links[:max_links_per_category]):
+            result = session.get(link).text
             doc = BeautifulSoup(result, 'html.parser')
 
             # Extract image URL
             try:
-                image_tag = doc.find('div', {'class': 'col-md-4 col-sm-4'})
-                if image_tag:
-                    image_tag = image_tag.findAll('div')[0].findAll('img')[0]
-                    image_url = image_tag['src']
-                    image_url_fixed = image_url.replace('../..', '')
-                    rimage_url = base_url + image_url_fixed
-                    try:
-                        rimage = requests.get(rimage_url).content  # Fetch image data
-                    except requests.exceptions.RequestException as e:
-                        print(f"Error! Failed to fetch image from {rimage_url}: {e}")
-                        rimage = None
-                else:
-                    print("Failed to find image tag.")
-                    rimage = None
-            except AttributeError:
-                print("Failed to find image tag.")
+                image_tag = doc.find('div', {'class': 'col-md-4 col-sm-4'}).find('img')
+                image_url = base_url + image_tag['src'].replace('../..', '')
+                rimage = session.get(image_url).content  # Fetch image data
+            except (AttributeError, IndexError, requests.exceptions.RequestException) as e:
+                print(f"Error! Failed to fetch image: {e}")
                 rimage = None
 
             # Extract other details
             try:
                 rtitle = doc.find('h1', {'class': 'red'}).text.strip()
                 ringredients = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[0].text.strip()
-                rservings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].findAll('div',
-                                                                                                                  {
-                                                                                                                      'class': 'f12 f12'})[
-                    1].text.strip()
+                rservings = doc.find('div', {'class': 'times'}).findAll('div', {'class': 'times_tab'})[1].find('div', {'class': 'f12 f12'}).text.strip()
                 rinstructions = doc.find('div', {'class': 'col-md-12 for-padding-col'}).find_all('p')[1].text.strip()
             except AttributeError as e:
                 print(f"Failed to find recipe details: {e}")
                 continue
 
-            print(f'images: {rimage_url}')
+            print(f'images: {image_url}')
             try:
                 DATABASE_URL = os.environ['DATABASE_URL']
                 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -114,7 +102,8 @@ try:
                     host="localhost",
                     database="flavors_api",
                     user=os.environ['PGUSER'],
-                    password=os.environ['PGPASSWORD'])
+                    password=os.environ['PGPASSWORD']
+                )
                 print(f"Failed to connect to database: {e}")
                 continue
 
@@ -136,6 +125,9 @@ try:
 
 except Exception as e:
     print(f"Failed to establish a new connection: {e}")
+finally:
+    session.close()  # Close the session after completing the task
+
 
 
 def get_daily_recipe(conn):
@@ -208,6 +200,60 @@ def terms():
     recipes = cur.fetchall()
 
     return render_template('terms.html')
+
+
+@app.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('query')
+    recipes = []
+    if query:
+        try:
+            DATABASE_URL = os.environ['DATABASE_URL']
+            conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        except Exception as e:
+            conn = psycopg2.connect(
+                host="localhost",
+                database="flavors_api",
+                user=os.environ['PGUSER'],
+                password=os.environ['PGPASSWORD']
+            )
+            print(f"Failed to connect to database: {e}")
+
+        try:
+            cur = conn.cursor()
+            cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE title ILIKE %s", (f'%{query}%',))
+            recipes = cur.fetchall()
+            cur.close()
+            conn.close()
+        except Exception as e:
+            print(f"Failed to fetch data: {e}")
+    return render_template('search.html', recipes=recipes)
+
+
+@app.route('/search-image/<int:recipe_id>', methods=['GET'])
+def search_image(recipe_id):
+    try:
+        DATABASE_URL = os.environ['DATABASE_URL']
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    except Exception as e:
+        conn = psycopg2.connect(
+            host="localhost",
+            database="flavors_api",
+            user=os.environ['PGUSER'],
+            password=os.environ['PGPASSWORD']
+        )
+        print(f"Failed to connect to database: {e}")
+
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT image FROM recipes WHERE rep_id = %s", (recipe_id,))
+        image_data = cur.fetchone()[0]
+        cur.close()
+        conn.close()
+        return send_file(io.BytesIO(image_data), mimetype='image/jpeg')
+    except Exception as e:
+        print(f"Failed to fetch image: {e}")
+        return '', 404
 
 
 @app.route('/about', methods=['GET'])

@@ -13,6 +13,9 @@
             <h1 class="text-6xl">Recipes by Category</h1>
         </div>
         <section class="pt-10 pb-10">
+            <input placeholder="Search">
+        </section>
+        <section class="pt-10 pb-10">
             <ul>
              {% for category in categories %}
                  <h1 class="pb-2 text-lg"><a href="{{ url_for('category_recipe', category=category) }}">{{ category }}</a></h1>
