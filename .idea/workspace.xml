@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e2b1a77c-5b1c-4ff9-8e8e-ae43a4a645ce" name="Changes" comment="new deploy another fix">
-      <change afterPath="$PROJECT_DIR$/templates/search.html" afterDir="false" />
+    <list default="true" id="e2b1a77c-5b1c-4ff9-8e8e-ae43a4a645ce" name="Changes" comment="Search implemented">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flavorsapi.py" beforeDir="false" afterPath="$PROJECT_DIR$/flavorsapi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/output.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/all_recipe.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/all_recipe.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/category_recipe.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/category_recipe.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/search.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,7 +149,8 @@
       <workItem from="1721113772276" duration="11319000" />
       <workItem from="1721284938297" duration="3977000" />
       <workItem from="1721388173714" duration="4177000" />
-      <workItem from="1721465530406" duration="8428000" />
+      <workItem from="1721465530406" duration="9660000" />
+      <workItem from="1721632439427" duration="6886000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -292,11 +288,30 @@
       <option name="project" value="LOCAL" />
       <updated>1721137433590</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Search implemented">
+      <option name="closed" value="true" />
+      <created>1721491870286</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1721491870290</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
@@ -311,7 +326,8 @@
     <MESSAGE value="new deploy" />
     <MESSAGE value="new deploy fix" />
     <MESSAGE value="new deploy another fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="new deploy another fix" />
+    <MESSAGE value="Search implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="Search implemented" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Flavors_api$Flavors_api.coverage" NAME="Flavors-api Coverage Results" MODIFIED="1720963801263" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
