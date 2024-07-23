@@ -691,22 +691,6 @@ def api_post():
 # Access specific recipe by id
 @app.route('/flavors/api/recipes/<rep_name>', methods=['GET'])
 def get_recipes(rep_name):
-    # Old code
-    # ========
-    # conn = psycopg2.connect(
-    # host="localhost",
-    # database="flavors_api",
-    # user=os.environ['DB_USERNAME'],
-    # password=os.environ['DB_PASSWORD'])
-    # cur = conn.cursor()
-    # cur = conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
-    # statement = "SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = ?"
-    # cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = %s", [rep_id])
-    # recipe = cur.fetchone()
-    # recipe = get_recipe_by_id(rep_id)
-    # return jsonify({'recipe': recipe}) #can change array position from 0 - 4
-    # original return jsonify({'recipe': recipe})
-
     try:
         DATABASE_URL = os.environ['DATABASE_URL']
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -715,24 +699,27 @@ def get_recipes(rep_name):
             host="localhost",
             database="flavors_api",
             user=os.environ['PGUSER'],
-            password=os.environ['PGPASSWORD'])
+            password=os.environ['PGPASSWORD']
+        )
 
-    # cur = conn.cursor()
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    # statement = "SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE rep_id = ?"
-    # cur.execute("SELECT rep_id, title, ingredients, servings, instructions FROM recipes WHERE title = %s", [rep_name])
-    cur.execute("SELECT * FROM recipes;")
+
+    if rep_name.casefold() == 'salata':
+        cur.execute("SELECT * FROM recipes WHERE title ILIKE %s;", ('%salata%',))
+    else:
+        cur.execute("SELECT * FROM recipes WHERE title ILIKE %s OR ingredients ILIKE %s;",
+                    (f'%{rep_name}%', f'%{rep_name}%'))
+
     recipes = cur.fetchall()
 
-    # .casefold ignores case strings (Whether uppercase or lower)
-    recipe = [recipe for recipe in recipes if
-              rep_name.casefold() in recipe['title'].casefold() or rep_name.casefold() in recipe[
-                  'ingredients'].casefold()]
-    # for recipe in recipes:
-    #    if rep_name in recipes:
-    #        break
+    for recipe in recipes:
+        if recipe.get('image'):
+            recipe['image'] = base64.b64encode(recipe['image']).decode('utf-8')
 
-    return jsonify({'recipe': recipe})  # can change array position from 0 - 4
+    cur.close()
+    conn.close()
+
+    return jsonify({'recipes': recipes})  # can change array position from 0 - 4
     # original return jsonify({'recipe': recipe})
 
 
