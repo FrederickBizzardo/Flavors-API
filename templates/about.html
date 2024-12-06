@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About Us</title>
+</head>
+<body>
+{% extends 'base.html' %}
+{% block content %}
+    <div class="pt-32 px-32">
+        <section class="pb-20">
+            <h1 class="text-6xl pb-10">About</h1>
+            <p>Welcome to Flavors, the ultimate recipe API for all your cooking needs.
+                Our API provides you with a vast collection of recipes, including all the latest and greatest dishes,
+                as well as classic and timeless favorites. Whether you're a seasoned chef or just starting out in the kitchen,
+                you'll find the perfect recipe to suit your taste and skill level. With Flavors, you can easily search and
+                filter recipes by ingredients, cuisine, and meal type. Say goodbye to endless scrolling and hello to quick and easy meal planning.
+                Try Flavors today and discover a world of delicious and accessible recipes at your fingertips.</p>
+            <img class="pt-20" src="{{ url_for('static', filename= 'images/bread.png') }}" alt="bread">
+            <h1 class="pt-10 text-teal-700 text-smaller"><a href="{{url_for('terms')}}">Terms & Conditions</a></h1>
+            <h1 class="pt-5 text-teal-700 text-smaller"><a href="{{url_for('terms')}}">Privacy</a></h1>
+        </section>
+    </div>
+{% endblock %}
+</body>
+</html>

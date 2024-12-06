@@ -1,0 +1,220 @@
+@font-face {
+    font-family: 'gotham-black';
+    src: url("/static/fonts/Gotham-Black.otf");
+}
+@font-face {
+    font-family: 'gotham-medium';
+    src: url("/static/fonts/GothamMedium.ttf");
+}
+@font-face {
+    font-family: 'onest-regular';
+    src: url("/static/fonts/Onest-Regular.ttf");
+}
+
+@font-face {
+    font-family: 'onest-black';
+    src: url("/static/fonts/Onest-Black.ttf");
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    font-family: 'onest-regular', sans-serif;
+}
+
+h1, h2 {
+    font-family: 'onest-black', sans-serif;
+    }
+p {
+    font-family: 'onest-regular', sans-serif;
+}
+/*input {
+    text-align: center;
+    font-family: monospace;
+    font-size: 15px;
+    border: 3px solid black;
+    width: 350px;
+    height: 30px;
+}
+textarea {
+    text-align: center;
+    font-family: monospace;
+    font-size: 15px;
+    border: 3px solid black;
+    width: 350px;
+    height: 30px;
+}
+
+.textarea {
+    resize: vertical;
+    
+}
+textarea:focus {
+    border: 3px solid #ff4141;
+    transition: .5s ease-in;
+}*/
+
+.discl {
+    font-weight: bold;
+}
+
+/*.ingred_btn {
+    background-color: DodgerBlue;
+    border: 1px solid DodgerBlue;
+    border-radius: 10px;
+    color: white;
+    padding: 12px 16px;
+    font-size: 16px;
+    cursor: pointer;
+  }*/
+
+.close {
+    padding-top: 10px;
+}
+.second_btn {
+    background-color: #007aff;
+    border: 1px solid #007aff;
+    border-radius: 10px;
+    color: white;
+    padding: 10px 16px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+.add {
+    padding-top: 20px;
+  }
+
+a {
+    padding-right: 15px;
+}
+
+.add_btn {
+    color: white;
+    text-decoration: none;
+}
+
+.add_btn:hover {
+    color: white;
+    text-decoration: none;
+}
+  
+  /* Darker background on mouse-over */
+.second_btn:hover {
+    background-color: #0072ed;
+    border: 1px solid #0072ed;
+}
+
+.delete {
+    padding-bottom: 30px;
+}
+
+.add_btn_instruct {
+    color: white;
+    text-decoration: none;
+}
+
+.third_btn {
+    background-color: #007aff;
+    border: 1px solid #007aff;
+    border-radius: 10px;
+    color: white;
+    padding: 10px 16px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+.third_btn:hover {
+    background-color: #0072ed;
+    border: 1px solid #0072ed;
+}
+
+.instruct_delete {
+    padding-bottom: 30px;
+}
+
+/*code {
+    padding: 20px 20px 0 20px;
+}*/
+/*.box {
+    width: 100%;
+    height: 30%;
+    border: 3px solid black;      
+}
+
+.instruct_btn {
+    font-family: 'gotham-black', sans-serif;
+    height: 30px;
+    width: 60px;
+    color: black;
+    background-color: white;
+    border: 3px solid black;
+    text-align: center;
+    display: inline-block;
+    
+}
+
+.instruct_btn:hover {
+    color: white;
+    background-color: black;
+}
+
+.rep_post {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex: 3;
+    margin-bottom: 60px;
+}*/
+
+label {
+    font-family: 'onest-regular', sans-serif;
+    font-size: 25px;
+    /*padding: 30px 0 5px 0;*/
+}
+
+.title {
+    padding-bottom: 30px;
+}
+
+/*.ingredients {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex: 3;
+    justify-content: left;
+}
+
+.ingred_ipt {
+    margin-right: 20px;
+}
+
+.instructions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex: 3;
+    justify-content: left;
+}
+
+.instruct_ipt {
+    margin-right: 20px;
+}
+
+.ingred_btn {
+    font-family: 'gotham-black', sans-serif;
+    height: 30px;
+    width: 60px;
+    color: black;
+    background-color: white;
+    border: 3px solid black;
+    text-align: center;
+    display: inline-block;
+    overflow-y: hidden;
+    overflow: hidden;
+}
+
+.ingred_btn:hover {
+    color: white;
+    background-color: black;
+}*/

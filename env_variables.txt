@@ -1,0 +1,7 @@
+export FLASK_APP=flavorsapi
+export FLASK_ENV=development
+export FLASK_DEBUG=1
+sudo /usr/pgadmin4/bin/setup-web.sh
+export DB_USERNAME="postgres"
+export DB_PASSWORD="bypass1998"
+export DATABASE_URL="postgresql://postgres:bypass1998@localhost:5432/flavors_api"
